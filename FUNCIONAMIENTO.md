@@ -8,8 +8,8 @@ esto es lo que hay que leer primero.
 
 ## 1. En una frase
 
-Cada 15 minutos consulta el precio real de 11 vuelos concretos en los sistemas
-de venta de Ryanair y Wizz Air, te avisa por Telegram cuando alguno baja, y
+Cada 15 minutos consulta el precio real de los vuelos listados en
+`watches.yaml` en los sistemas de venta de Ryanair y Wizz Air, te avisa por Telegram cuando alguno baja, y
 publica un panel web con las combinaciones de viaje que salen a cuenta.
 
 **Corre solo en la nube.** No hace falta tener el ordenador encendido.

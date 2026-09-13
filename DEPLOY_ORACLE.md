@@ -1,5 +1,10 @@
 # Desplegar BotViajes en Oracle Cloud (Always Free) 🆓☁️
 
+> ⚠️ **NO SE USA.** El bot corre en **GitHub Actions** (ver
+> [FUNCIONAMIENTO.md](FUNCIONAMIENTO.md)). Esta guía se conserva
+> por si alguna vez hace falta un servidor propio.
+
+
 Guía para dejar el bot corriendo 24/7 y gratis para siempre en una VM de Oracle.
 No hace falta abrir ningún puerto: el bot solo hace conexiones **salientes**
 (a Telegram y a los operadores).

@@ -220,10 +220,11 @@ def main():
                               if o["total_persona"] else "incompleta"))
 
     if args.desplegar:
-        print("\nDesplegando en Vercel...")
-        r = subprocess.run(["vercel", "deploy", "--prod", "--yes", WEB],
-                           capture_output=True, text=True)
-        print(r.stdout.strip()[-500:] or r.stderr.strip()[-500:])
+        # Publicar es subir el commit: Vercel está conectado al repositorio.
+        print("\nPublicando...")
+        r = subprocess.run([sys.executable, os.path.join(RAIZ, "publicar.py")],
+                           cwd=RAIZ, capture_output=True, text=True)
+        print((r.stdout or r.stderr).strip()[-400:])
 
 
 if __name__ == "__main__":

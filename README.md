@@ -205,32 +205,37 @@ Mac se desactivan en servidor (`MAC_ALERTS=0`); el canal es Telegram.
 ## El viaje de octubre (Alicante, 8-12 oct 2026)
 
 Hay montado un caso concreto: dos personas, ida y vuelta desde Alicante, **solo
-vuelo directo**, saliendo el 8 a partir de las 20:00 o el 9 a cualquier hora,
-volviendo el 11 a cualquier hora o el 12 aterrizando antes de las 18:00, con un
-tope de 160 € por persona y dos países en el viaje.
+vuelo directo**. Las reglas completas, los avisos que manda y las trampas de
+cada aerolínea están en **[FUNCIONAMIENTO.md](FUNCIONAMIENTO.md)**.
+
+**Corre solo en GitHub Actions**: no hace falta tener el ordenador encendido.
+El bot commitea los precios al repo y, como Vercel está conectado a él, ese
+mismo commit republica el panel. No hay ningún token de Vercel en el proyecto.
 
 - **`rutas.json`** — los itinerarios: tramos de avión, saltos en tren o bus y el día a día.
-- **`configurar_vigilancia.py`** — deja `watches.json` con un tramo por vigilancia.
+- **`watches.yaml`** — qué vuelos se vigilan (esto es lo que lee la nube).
 - **`actualizar_web.py`** — genera `web/datos.json` reaprovechando los precios que
-  ya consultó el bot (así la web y Telegram dicen exactamente lo mismo).
-- **`monitor.py`** — el vigilante: sondea, avisa por Telegram y republica la web
-  **solo si algún precio ha cambiado**, para no gastar despliegues de Vercel.
-- **`resumen_telegram.py`** — manda el resumen completo con enlaces de compra.
+  ya consultó el bot, así la web y Telegram dicen exactamente lo mismo.
+- **`publicar.py`** — sube los datos al repo, que es lo que dispara el despliegue.
+- **`monitor.py`** — el mismo bucle para ejecutarlo en el Mac. **Normalmente
+  parado**: tenerlo a la vez que la nube duplicaría avisos y consultas.
+- **`probar_avisos.py`** — las pruebas. Seis casos, todos deben salir en verde.
 - **`research/`** — cómo se llegó a esas combinaciones: barrido de las 91 rutas de
-  Ryanair y de los mercados de Wizz desde Alicante, horarios reales, tabla de
-  conexiones por tierra y el cruce con Google Flights para comprobar que no había
-  ninguna aerolínea más barata en directo.
+  Ryanair y de los mercados de Wizz desde Alicante, horarios reales, conexiones
+  por tierra contrastadas con horarios de verdad y el cruce con Google Flights.
 
 ```sh
-./venv/bin/python monitor.py                 # bucle cada 15 min
-./venv/bin/python monitor.py --una-vez       # una pasada
-./venv/bin/python actualizar_web.py --desplegar   # regenerar y publicar la web
+./venv/bin/python run.py --once          # una pasada y enseña el estado
+./venv/bin/python probar_avisos.py       # las pruebas
+./venv/bin/python actualizar_web.py      # regenerar los datos de la web
+./venv/bin/python publicar.py            # subirlos (Vercel despliega solo)
 ```
 
 ### La web
-Panel con las combinaciones, el desglose de cada tramo, el día a día y los botones
-de compra: **https://viaje-octubre.vercel.app** (proyecto `viaje-octubre` en Vercel).
-Es estática: `monitor.py` regenera `web/datos.json` y republica cuando cambia algo.
+Panel con las combinaciones, el desglose de cada tramo con su duración y rango de
+precios, el día a día y los botones de compra:
+**https://viaje-octubre.vercel.app** (proyecto `viaje-octubre`, directorio raíz
+`web`, conectado a este repositorio).
 
 ### Divisas
 Ryanair y Wizz cotizan en la moneda del país **de salida**: un Pardubice→Alicante
