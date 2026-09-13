@@ -44,9 +44,14 @@
      "duracion": "3:38",
      "minimo": 99.99,
      "maximo": 99.99,
-     "visto": "2026-09-14 01:19",
+     "visto": "2026-09-13 23:20",
      "estado": "ok",
-     "historico": [],
+     "historico": [
+      [
+       "2026-09-13 23:20",
+       99.99
+      ]
+     ],
      "variacion": 0.0
     },
     {
@@ -69,9 +74,14 @@
      "duracion": "3:38",
      "minimo": 69.99,
      "maximo": 69.99,
-     "visto": "2026-09-14 01:19",
+     "visto": "2026-09-13 23:20",
      "estado": "ok",
-     "historico": [],
+     "historico": [
+      [
+       "2026-09-13 23:20",
+       69.99
+      ]
+     ],
      "variacion": 0.0
     }
    ],
@@ -146,7 +156,7 @@
      "duracion": "02:45",
      "minimo": 95.19,
      "maximo": 159.96,
-     "visto": "2026-09-14 01:19",
+     "visto": "2026-09-13 23:20",
      "estado": "ok",
      "historico": [
       [
@@ -270,7 +280,7 @@
      "duracion": "03:00",
      "minimo": 40.96,
      "maximo": 54.91,
-     "visto": "2026-09-14 01:19",
+     "visto": "2026-09-13 23:20",
      "estado": "ok",
      "historico": [
       [
@@ -425,7 +435,7 @@
      "etiqueta": "precio orientativo",
      "url": "https://www.wizzair.com/es-es/booking/select-flight/ALC/BTS/2026-10-09/null/2/0/0/null",
      "plazas": null,
-     "visto": "2026-09-14 01:19",
+     "visto": "2026-09-13 23:20",
      "estado": "orientativo",
      "historico": [
       [
@@ -497,7 +507,7 @@
      "duracion": "03:00",
      "minimo": 40.96,
      "maximo": 54.91,
-     "visto": "2026-09-14 01:19",
+     "visto": "2026-09-13 23:20",
      "estado": "ok",
      "historico": [
       [
@@ -652,7 +662,7 @@
      "duracion": "03:05",
      "minimo": 92.19,
      "maximo": 175.6,
-     "visto": "2026-09-14 01:19",
+     "visto": "2026-09-13 23:20",
      "estado": "ok",
      "historico": [
       [
@@ -759,7 +769,7 @@
      "duracion": "03:00",
      "minimo": 40.96,
      "maximo": 54.91,
-     "visto": "2026-09-14 01:19",
+     "visto": "2026-09-13 23:20",
      "estado": "ok",
      "historico": [
       [
@@ -913,7 +923,7 @@
      "duracion": "02:45",
      "minimo": 95.19,
      "maximo": 159.96,
-     "visto": "2026-09-14 01:19",
+     "visto": "2026-09-13 23:20",
      "estado": "ok",
      "historico": [
       [
@@ -1028,7 +1038,7 @@
      "duracion": "3:15",
      "minimo": 54.89,
      "maximo": 114.99,
-     "visto": "2026-09-14 01:19",
+     "visto": "2026-09-13 23:20",
      "estado": "ok",
      "historico": [
       [
@@ -1131,7 +1141,7 @@
      "etiqueta": "precio orientativo",
      "url": "https://www.wizzair.com/es-es/booking/select-flight/ALC/BTS/2026-10-09/null/2/0/0/null",
      "plazas": null,
-     "visto": "2026-09-14 01:19",
+     "visto": "2026-09-13 23:20",
      "estado": "orientativo",
      "historico": [
       [
@@ -1194,7 +1204,7 @@
      "duracion": "3:15",
      "minimo": 54.89,
      "maximo": 114.99,
-     "visto": "2026-09-14 01:19",
+     "visto": "2026-09-13 23:20",
      "estado": "ok",
      "historico": [
       [
@@ -1294,7 +1304,7 @@
      "etiqueta": "precio orientativo",
      "url": "https://www.wizzair.com/es-es/booking/select-flight/ALC/BTS/2026-10-09/null/2/0/0/null",
      "plazas": null,
-     "visto": "2026-09-14 01:19",
+     "visto": "2026-09-13 23:20",
      "estado": "orientativo",
      "historico": [
       [
@@ -1366,7 +1376,7 @@
      "duracion": "02:40",
      "minimo": 74.99,
      "maximo": 173.99,
-     "visto": "2026-09-14 01:19",
+     "visto": "2026-09-13 23:20",
      "estado": "ok",
      "historico": [
       [
@@ -1494,6 +1504,6 @@
    "dentro_presupuesto": false
   }
  ],
- "actualizado": "2026-09-14 01:19",
- "actualizado_iso": "2026-09-14T01:19:49.722263+02:00"
+ "actualizado": "2026-09-13 23:20",
+ "actualizado_iso": "2026-09-13T23:20:45.060235+00:00"
 }
