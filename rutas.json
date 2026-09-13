@@ -153,140 +153,6 @@
    ]
   },
   {
-   "id": "belfast-dublin",
-   "titulo": "Belfast + Dublín",
-   "subtitulo": "Dos países en la misma isla, y el viaje más largo",
-   "paises": [
-    "Reino Unido",
-    "Irlanda"
-   ],
-   "noches": 3,
-   "por_que": "La que más tiempo te deja: 62 horas en destino. Sale el jueves por la noche y el tren Enterprise une Belfast y Dublín en 2h10, con salidas cada hora.",
-   "aviso": "Son dos monedas: en Irlanda del Norte se paga en libras y en la República en euros.",
-   "tramos": [
-    {
-     "tipo": "vuelo",
-     "dir": "",
-     "cia": "ryanair",
-     "vuelo": "RK9570",
-     "de": "ALC",
-     "a": "BFS",
-     "de_nombre": "Alicante",
-     "a_nombre": "Belfast",
-     "fecha": "2026-10-08",
-     "sale": "22:00",
-     "llega": "00:05",
-     "ref": 97.99
-    },
-    {
-     "tipo": "tierra",
-     "de_nombre": "Belfast",
-     "a_nombre": "Dublín",
-     "como": "Tren Enterprise directo (cada hora) o bus Aircoach",
-     "duracion": "2 h 10 min",
-     "coste": "20-30 €",
-     "cuando": "domingo 11 por la mañana"
-    },
-    {
-     "tipo": "vuelo",
-     "dir": "",
-     "cia": "ryanair",
-     "vuelo": "FR261",
-     "de": "DUB",
-     "a": "ALC",
-     "de_nombre": "Dublín",
-     "a_nombre": "Alicante",
-     "fecha": "2026-10-11",
-     "sale": "16:25",
-     "llega": "20:15",
-     "ref": 29.99
-    }
-   ],
-   "itinerario": [
-    {
-     "dia": "Jueves 8",
-     "texto": "Vuelo a las 22:00; en Belfast a las 00:05 (una hora menos que en España)."
-    },
-    {
-     "dia": "Viernes 9",
-     "texto": "Día completo en Belfast: el Titanic Quarter y los murales."
-    },
-    {
-     "dia": "Sábado 10",
-     "texto": "Belfast, o excursión a la Calzada del Gigante (1h15 en bus)."
-    },
-    {
-     "dia": "Domingo 11",
-     "texto": "Tren a Dublín por la mañana (2h10), medio día allí y vuelo a las 16:25."
-    }
-   ]
-  },
-  {
-   "id": "colonia-bruselas",
-   "titulo": "Colonia + Bruselas",
-   "subtitulo": "Tren directo de 1h50 entre las dos",
-   "paises": [
-    "Alemania",
-    "Bélgica"
-   ],
-   "noches": 2,
-   "por_que": "Colonia y Bruselas están a 1h50 en tren ICE directo, la conexión más rápida de toda la lista.",
-   "aviso": "Es la más justa de tiempo: el vuelo de vuelta sale de Charleroi a las 06:30 y el aeropuerto está a 1 h de Bruselas, así que hay que salir de madrugada. Bélgica se queda en poco más de medio día.",
-   "tramos": [
-    {
-     "tipo": "vuelo",
-     "dir": "",
-     "cia": "ryanair",
-     "vuelo": "FR1356",
-     "de": "ALC",
-     "a": "CGN",
-     "de_nombre": "Alicante",
-     "a_nombre": "Colonia",
-     "fecha": "2026-10-09",
-     "sale": "20:45",
-     "llega": "23:25",
-     "ref": 88.99
-    },
-    {
-     "tipo": "tierra",
-     "de_nombre": "Colonia",
-     "a_nombre": "Bruselas",
-     "como": "Tren ICE directo (1h50) o autobús FlixBus (3h40)",
-     "duracion": "1 h 50 min",
-     "coste": "15-60 €",
-     "cuando": "sábado 10 por la tarde"
-    },
-    {
-     "tipo": "vuelo",
-     "dir": "",
-     "cia": "ryanair",
-     "vuelo": "FR9063",
-     "de": "CRL",
-     "a": "ALC",
-     "de_nombre": "Bruselas Charleroi",
-     "a_nombre": "Alicante",
-     "fecha": "2026-10-11",
-     "sale": "06:30",
-     "llega": "09:00",
-     "ref": 52.27
-    }
-   ],
-   "itinerario": [
-    {
-     "dia": "Viernes 9",
-     "texto": "Vuelo a las 20:45; en Colonia a las 23:25."
-    },
-    {
-     "dia": "Sábado 10",
-     "texto": "Día en Colonia (la catedral está pegada a la estación) y tren a Bruselas por la tarde."
-    },
-    {
-     "dia": "Domingo 11",
-     "texto": "Salida de madrugada hacia Charleroi, vuelo a las 06:30 y en Alicante a las 09:00."
-    }
-   ]
-  },
-  {
    "id": "wroclaw-praga",
    "titulo": "Wrocław + Praga",
    "subtitulo": "Tren directo Wrocław-Pardubice de 2h50",
@@ -577,67 +443,61 @@
    ]
   },
   {
-   "id": "belfast-dublin-manana",
-   "titulo": "Belfast + Dublín (vuelo de mañana)",
-   "subtitulo": "22 € más barata que la versión del jueves",
+   "id": "gdansk",
+   "titulo": "Gdansk, sin moverse",
+   "subtitulo": "Entras y sales por el mismo aeropuerto: cero traslados",
    "paises": [
-    "Reino Unido",
-    "Irlanda"
+    "Polonia"
    ],
-   "noches": 2,
-   "por_que": "Misma ruta que la del jueves pero volando el viernes temprano: sale 22 € más barata y aterrizas a las 07:50 con el día entero por delante, en vez de a medianoche.",
-   "aviso": "El vuelo sale a las 05:45, así que hay que estar en el aeropuerto sobre las 04:30.",
+   "noches": 3,
+   "por_que": "La única opción de entrar y salir por el mismo sitio sin coger ningún transporte entre aeropuertos. El casco viejo se hace a pie, Sopot y su playa están a 20 minutos en cercanías y el castillo de Malbork a 50.",
+   "aviso": "Está por encima del tope de 160 € por persona. Sales el jueves a las 21:10 y aterrizas a las 00:48, así que ganas el viernes y el sábado enteros.",
    "tramos": [
     {
      "tipo": "vuelo",
-     "dir": "",
-     "cia": "ryanair",
-     "vuelo": "FR9559",
+     "dir": "ida",
+     "cia": "wizz",
+     "vuelo": "W6",
      "de": "ALC",
-     "a": "BFS",
+     "a": "GDN",
      "de_nombre": "Alicante",
-     "a_nombre": "Belfast",
-     "fecha": "2026-10-09",
-     "sale": "05:45",
-     "llega": "07:50",
-     "ref": 86.99
-    },
-    {
-     "tipo": "tierra",
-     "de_nombre": "Belfast",
-     "a_nombre": "Dublín",
-     "como": "Tren Enterprise directo (cada hora) o bus Aircoach",
-     "duracion": "2 h 10 min",
-     "coste": "20-30 €",
-     "cuando": "domingo 11 por la mañana"
+     "a_nombre": "Gdansk",
+     "fecha": "2026-10-08",
+     "sale": "21:10",
+     "llega": "00:48",
+     "ref": 99.99
     },
     {
      "tipo": "vuelo",
-     "dir": "",
-     "cia": "ryanair",
-     "vuelo": "FR261",
-     "de": "DUB",
+     "dir": "vuelta",
+     "cia": "wizz",
+     "vuelo": "W6",
+     "de": "GDN",
      "a": "ALC",
-     "de_nombre": "Dublín",
+     "de_nombre": "Gdansk",
      "a_nombre": "Alicante",
      "fecha": "2026-10-11",
-     "sale": "16:25",
-     "llega": "20:15",
-     "ref": 29.99
+     "sale": "16:45",
+     "llega": "20:23",
+     "ref": 69.99
     }
    ],
    "itinerario": [
     {
+     "dia": "Jueves 8",
+     "texto": "Vuelo a las 21:10; en Gdansk a las 00:48."
+    },
+    {
      "dia": "Viernes 9",
-     "texto": "Vuelo de madrugada; en Belfast a las 07:50 con el día completo."
+     "texto": "Día completo en el casco viejo: Długi Targ, la grúa medieval y la basílica."
     },
     {
      "dia": "Sábado 10",
-     "texto": "Belfast, o excursión a la Calzada del Gigante (1h15 en bus)."
+     "texto": "Sopot y su muelle (20 min en cercanías), o el castillo de Malbork (50 min)."
     },
     {
      "dia": "Domingo 11",
-     "texto": "Tren a Dublín por la mañana (2h10), medio día allí y vuelo a las 16:25."
+     "texto": "Mañana libre y vuelo a las 16:45; en Alicante a las 20:23."
     }
    ]
   }
