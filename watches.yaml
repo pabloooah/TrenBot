@@ -86,16 +86,6 @@ watches:
   max_price: 105
   adults: 2
   poll_interval: 900
-- name: VUELTA · Charleroi→Alicante (dom 11)
-  providers:
-  - ryanair
-  origin: CRL
-  destination: ALC
-  date: '2026-10-11'
-  time: 06:30
-  max_price: 40
-  adults: 2
-  poll_interval: 900
 - name: IDA · Alicante→Wrocław (vie 9)
   providers:
   - ryanair

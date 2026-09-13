@@ -90,8 +90,14 @@ class RyanairProvider(Provider):
     def resolve(self, query):
         """Acepta código IATA ('BTS') o nombre de ciudad ('Bratislava')."""
         q = (query or "").strip()
-        if len(q) == 3 and q.isalpha() and q.upper() in self._est:
-            return self._est[q.upper()]["name"], q.upper()
+        if len(q) == 3 and q.isalpha():
+            # Un código IATA solo puede casar con un código. Si no está en la
+            # tabla, NO se busca por nombre: 'BRU' encajaba como subcadena de
+            # 'Bruselas Charleroi' y devolvía Charleroi (otro aeropuerto, a
+            # 60 km) sin que nada lo advirtiera.
+            if q.upper() in self._est:
+                return self._est[q.upper()]["name"], q.upper()
+            return None, None
         return self.match_station(
             q, self._est.items(),
             name_getter=lambda kv: kv[1]["name"],
