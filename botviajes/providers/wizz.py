@@ -110,9 +110,9 @@ class WizzProvider(Provider):
         """
         if not (salida and llegada):
             return None
-        a, b = self._est.get(o), self._est.get(d)
+        a, b = self._est.get(o) or {}, self._est.get(d) or {}
         desfase = (HUSO.get((b.get("cc") or "").upper(), 2)
-                   - HUSO.get((a.get("cc") or "").upper(), 2)) * 60 if a and b else 0
+                   - HUSO.get((a.get("cc") or "").upper(), 2)) * 60
         def m(t):
             hh, mm = t.split(":")[:2]
             return int(hh) * 60 + int(mm)
@@ -125,7 +125,9 @@ class WizzProvider(Provider):
         if exacta:
             return exacta, False
         a, b = self._est.get(o), self._est.get(d)
-        if not (a and b and salida):
+        # Sin coordenadas no se puede estimar. Antes reventaba con KeyError y
+        # la ruta se quedaba muda, disfrazado de "sin datos".
+        if not (a and b and salida) or a.get("lat") is None or b.get("lat") is None:
             return "", True
         r = 6371.0
         la1, lo1, la2, lo2 = map(math.radians, [a["lat"], a["lon"], b["lat"], b["lon"]])

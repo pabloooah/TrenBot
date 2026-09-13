@@ -12,6 +12,11 @@ from conectividad import enlace, km
 
 S = os.path.dirname(os.path.abspath(__file__))
 TOPE = 160.0
+# Descartados por decisión del viaje: las islas británicas quedan fuera, y
+# España no cuenta como "viajar a otro país".
+FUERA = {"Reino Unido", "Irlanda", "España"}
+# Aeropuertos descartados a mano
+AEROPUERTOS_FUERA = {"BGY", "MXP", "TRN", "MIL"}
 IDA_8, IDA_9, VUE_11, VUE_12 = "2026-10-08", "2026-10-09", "2026-10-11", "2026-10-12"
 HORA_MIN_8, LLEGADA_MAX_12 = "20:00", "18:00"
 # Salir el 8 de noche y aterrizar tarde compensa: se gana el viernes entero.
@@ -56,25 +61,34 @@ def cargar():
             p = precios.get(dia)
             if p is None:
                 continue
-            for num, sale, llega in ry.get("sched_out", {}).get(c, {}).get(dia, []):
+            vuelos_dia = ry.get("sched_out", {}).get(c, {}).get(dia, [])
+            # cheapestPerDay da el precio MÍNIMO DEL DÍA, no el de cada vuelo.
+            # Si ese día hay más de uno, el precio puede ser de otro horario:
+            # se marca para no darlo por bueno sin verificarlo en vivo.
+            varios = len(vuelos_dia) > 1
+            for num, sale, llega in vuelos_dia:
                 if dia == IDA_8 and hm(sale) < hm(HORA_MIN_8):
                     continue
                 if dia == IDA_9 and (hm(llega) < hm(sale)
                                      or hm(llega) > hm(LLEGADA_MAX_IDA_9)):
                     continue
                 idas.append({"iata": c, "cia": "Ryanair", "dia": dia, "sale": sale,
-                             "llega": llega, "precio": p, "num": num})
+                             "llega": llega, "precio": p, "num": num,
+                             "varios_ese_dia": varios})
     for c, precios in ry["back"].items():
         for dia in (VUE_11, VUE_12):
             p = precios.get(dia)
             if p is None:
                 continue
-            for num, sale, llega in ry.get("sched_back", {}).get(c, {}).get(dia, []):
+            vuelos_dia = ry.get("sched_back", {}).get(c, {}).get(dia, [])
+            varios = len(vuelos_dia) > 1
+            for num, sale, llega in vuelos_dia:
                 cruza = hm(llega) < hm(sale)
                 if dia == VUE_12 and (cruza or hm(llega) > hm(LLEGADA_MAX_12)):
                     continue
                 vueltas.append({"iata": c, "cia": "Ryanair", "dia": dia, "sale": sale,
-                                "llega": llega, "precio": p, "num": num})
+                                "llega": llega, "precio": p, "num": num,
+                                "varios_ese_dia": varios})
 
     fw = os.path.join(S, "wizz_completo.json")
     if os.path.exists(fw):
@@ -154,15 +168,20 @@ def main():
             libres = (t_sale - t_lleg).total_seconds() / 3600 - horas
             if libres < 36:
                 continue
+            if ca["country"] in FUERA or cv["country"] in FUERA:
+                continue
+            if a["iata"] in AEROPUERTOS_FUERA or v["iata"] in AEROPUERTOS_FUERA:
+                continue
             paises = {ca["country"], cv["country"]}
             combos.append({"total": total, "a": a, "v": v, "ca": ca, "cv": cv,
                            "horas": horas, "como": como, "dist": dist,
                            "libres": libres, "paises": len(paises)})
 
     dos = sorted([c for c in combos if c["paises"] == 2], key=lambda c: c["total"])
-    print("\nCombinaciones de DOS PAÍSES bajo %d €: %d\n" % (TOPE, len(dos)))
+    uno = sorted([c for c in combos if c["paises"] == 1], key=lambda c: c["total"])
+    print("\nDOS PAÍSES bajo %d €: %d  ·  UN PAÍS: %d\n" % (TOPE, len(dos), len(uno)))
     vistos = set()
-    for c in dos:
+    for c in dos + uno:
         k = (c["a"]["iata"], c["v"]["iata"])
         if k in vistos:
             continue
@@ -179,6 +198,9 @@ def main():
                  v["cia"][:2], v["num"], v["precio"],
                  "  (llegada estimada)" if v.get("estimada") else ""))
         print("        TIERRA %.1f h · %s" % (c["horas"], c["como"]))
+        if a.get("varios_ese_dia") or v.get("varios_ese_dia"):
+            print("        ⚠️  ese día hay más de un vuelo: el precio puede ser "
+                  "de otro horario, hay que verificarlo en vivo")
         print()
 
 
