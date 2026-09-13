@@ -8,7 +8,7 @@ esto es lo que hay que leer primero.
 
 ## 1. En una frase
 
-Cada 15 minutos consulta el precio real de 14 vuelos concretos en los sistemas
+Cada 15 minutos consulta el precio real de 11 vuelos concretos en los sistemas
 de venta de Ryanair y Wizz Air, te avisa por Telegram cuando alguno baja, y
 publica un panel web con las combinaciones de viaje que salen a cuenta.
 
@@ -197,6 +197,9 @@ Alicante ida y vuelta, 2 personas, **solo vuelos directos**:
 3. Máximo **160 € por persona** sumando ida y vuelta.
 4. **Dos países**, con al menos un día para el segundo.
 5. Si sales el 9, **aterrizar antes de las 20:00**: llegar de noche pierde el día.
+6. **Sin viajes por dentro**: cuanto menos transporte entre aeropuertos, mejor.
+
+Quedan fuera por decisión del viaje: **Reino Unido, Irlanda, Alemania y España**.
 
 Las combinaciones están en `rutas.json`, con sus tramos, el trayecto por tierra
 y el día a día. La conectividad terrestre está **verificada con horarios
