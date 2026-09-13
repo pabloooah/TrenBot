@@ -73,6 +73,7 @@ web**. No hay token de Vercel en ninguna parte, y no depende del Mac.
 | `actualizar_web.py` | Genera `web/datos.json` con los precios que ya tiene el bot. |
 | `configurar_vigilancia.py` | Deja `watches.json` listo con las rutas del viaje. |
 | `resumen_telegram.py` | Manda el resumen completo a mano. |
+| `publicar.py` | Sube los datos al repo, que es lo que hace desplegar a Vercel. |
 | `probar_avisos.py` | **Las pruebas.** Seis casos, todos deben salir en verde. |
 
 ### Los datos

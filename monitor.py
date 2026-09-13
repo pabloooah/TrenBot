@@ -42,11 +42,20 @@ def huella_precios():
 
 
 def desplegar():
-    r = subprocess.run(["vercel", "deploy", "--prod", "--yes"], cwd=WEB,
-                       capture_output=True, text=True)
+    """Publica la web subiendo los cambios al repo.
+
+    Vercel está conectado a este repositorio, así que el commit dispara el
+    despliegue. Antes esto llamaba a `vercel deploy` desde web/, pero el
+    proyecto tiene 'web' como directorio raíz y desde ahí buscaba web/web:
+    fallaba siempre.
+    """
+    import sys as _s
+    r = subprocess.run([_s.executable, os.path.join(RAIZ, "publicar.py")],
+                       cwd=RAIZ, capture_output=True, text=True)
     ok = r.returncode == 0
-    print("   %s" % ("publicado en Vercel" if ok else
-                     "fallo al publicar: " + (r.stderr or "")[-200:].strip()))
+    print("   %s" % (r.stdout.strip().splitlines()[-1] if ok and r.stdout.strip()
+                     else ("publicado" if ok else "no se pudo publicar: "
+                           + (r.stderr or "")[-160:].strip())))
     return ok
 
 
