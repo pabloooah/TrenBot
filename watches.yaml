@@ -156,3 +156,23 @@ watches:
   max_price: 80
   adults: 2
   poll_interval: 900
+- name: IDA · Alicante→Gdansk (jue 8, 21:10)
+  providers:
+  - wizz
+  origin: ALC
+  destination: GDN
+  date: '2026-10-08'
+  time: '21:10'
+  max_price: 80
+  adults: 2
+  poll_interval: 900
+- name: VUELTA · Gdansk→Alicante (dom 11)
+  providers:
+  - wizz
+  origin: GDN
+  destination: ALC
+  date: '2026-10-11'
+  time: '16:45'
+  max_price: 55
+  adults: 2
+  poll_interval: 900
