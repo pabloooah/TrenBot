@@ -12,6 +12,20 @@ from botviajes.models import Offer
 from botviajes.providers import get_provider
 
 
+def _tope_del_viaje():
+    """Tope por persona definido en rutas.json, para saber qué es ruido."""
+    try:
+        import json as _j, os as _o
+        ruta = _o.path.join(_o.path.dirname(_o.path.dirname(_o.path.abspath(__file__))),
+                            "rutas.json")
+        return (_j.load(open(ruta, encoding="utf-8")).get("viaje") or {}).get(
+            "tope_por_persona")
+    except Exception:
+        return None
+
+
+TOPE_VIAJE = _tope_del_viaje()
+
 # Panel web donde se ve todo junto; se enlaza en cada aviso de Telegram.
 WEB_URL = os.environ.get("WEB_URL", "https://viaje-octubre.vercel.app").strip()
 
@@ -46,6 +60,14 @@ def bloque_horas(oferta, fecha):
             oferta.destination, aprox, oferta.arrival,
             (" — hora local de %s" % pd) if pd else ""))
     return lineas
+
+
+def _minutos(txt):
+    """'2 h 10 min' -> 130. Para sumar saltos por tierra encadenados."""
+    import re as _re
+    h = _re.search(r"(\d+)\s*h", txt or "")
+    m = _re.search(r"(\d+)\s*min", txt or "")
+    return (int(h.group(1)) * 60 if h else 0) + (int(m.group(1)) if m else 0)
 
 
 def dur_bonita(txt):
@@ -124,10 +146,21 @@ def bloque_viaje(watch, watches, precio_actual=None, maximo=2):
         if tierras:
             etiq = "y luego" if rol == "IDA" else "cómo llegas"
             lineas.append("")
-            for g in tierras:
+            if len(tierras) == 1:
+                g = tierras[0]
                 lineas.append("      🚆 %s: %s → %s · %s · %s"
                               % (etiq, g["de_nombre"], g["a_nombre"],
                                  g["duracion"], g["coste"]))
+            else:
+                # Con dos o más saltos, una línea por cada uno llenaba el
+                # mensaje de trenes repetidos: se encadenan en una sola.
+                ruta = tierras[0]["de_nombre"] + " → " + " → ".join(
+                    g["a_nombre"] for g in tierras)
+                total = sum(_minutos(g.get("duracion", "")) for g in tierras)
+                lineas.append("      🚆 %s: %s · %s en total"
+                              % (etiq, ruta,
+                                 "%dh%02d" % (total // 60, total % 60) if total
+                                 else "varios tramos"))
         if t.get("url"):
             lineas.append("")
             lineas.append('      👉 <a href="%s">comprar este</a>' % t["url"])
@@ -492,7 +525,8 @@ class Engine:
         aviso = None
         if (watch.get("avisar_bajadas", True) and anterior is not None
                 and mejor.price <= anterior - umbral):
-            aviso = self._texto_bajada(watch, mejor, anterior)
+            if self._merece_la_pena(watch, mejor):
+                aviso = self._texto_bajada(watch, mejor, anterior)
             watch["_bajaba_desde"] = anterior
         with self._lock:
             # Los datos del vuelo (horas, duración, plazas, enlace) se refrescan
@@ -531,6 +565,33 @@ class Engine:
         else:
             self._save()
         return aviso
+
+    def _merece_la_pena(self, watch, oferta, margen=1.25):
+        """¿Vale la pena avisar de esta bajada?
+
+        Bajar 5 € en un vuelo cuyo único viaje cuesta el doble del tope no es
+        información útil, es ruido: el viaje sigue siendo imposible. Se avisa
+        igualmente si es un mínimo histórico, porque eso sí dice algo.
+        """
+        previos = [p[1] for p in (watch.get("serie") or []) if p[1] and p[1] > 0]
+        if not previos or oferta.price <= min(previos) + 0.01:
+            return True                     # mínimo histórico: siempre interesa
+        try:
+            viajes = viajes_con(watch, self.watches, oferta.price)
+        except Exception:
+            return True
+        if not viajes:
+            return True                     # no forma parte de ningún viaje aún
+        tope = TOPE_VIAJE
+        if not tope:
+            return True
+        mejor_total = min(v["total"] for v in viajes)
+        if mejor_total <= tope * margen:
+            return True
+        print("  [%s] bajada de %.2f € pero el viaje más barato con ese vuelo "
+              "cuesta %.2f € (tope %.0f): no aviso"
+              % (watch["name"], oferta.price, mejor_total, tope))
+        return False
 
     def _texto_bajada(self, watch, oferta, anterior):
         """Aviso de bajada CON CONTEXTO.

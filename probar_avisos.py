@@ -157,13 +157,48 @@ def main():
     if not ok6:
         fallos.append("el aviso de objetivo se repite en cada sondeo")
 
-    # --- 7. Canal real de Telegram ------------------------------------------
+    # --- 7. No avisar de bajadas en viajes imposibles ------------------------
+    from botviajes.combinador import viajes_con
+    reales_act = [x for x in reales if x.get("enabled", True)]
+    # Un motor con TODAS las rutas: _merece_la_pena mira las combinaciones, y
+    # con una sola ruta cargada no encontraría ninguna y siempre diría que sí.
+    motor7, _, tmp7 = motor_de_prueba(reales_act)
+    caros, baratos = [], []
+    for x in reales_act:
+        if x.get("ultimo_precio") is None:
+            continue
+        vs = viajes_con(x, reales_act)
+        if not vs:
+            continue
+        (caros if min(v["total"] for v in vs) > 200 else baratos).append(x)
+    ok7 = True
+    detalle = []
+    for x in caros[:2]:
+        of = Offer(provider=x["providers"][0], origin="A", destination="B",
+                   date=x["date"], departure=x.get("time", ""),
+                   price=x["ultimo_precio"], available=True)
+        if motor7._merece_la_pena(x, of):
+            ok7 = False
+            detalle.append("avisaría de %s (viaje carísimo)" % x["name"])
+    for x in baratos[:2]:
+        of = Offer(provider=x["providers"][0], origin="A", destination="B",
+                   date=x["date"], departure=x.get("time", ""),
+                   price=x["ultimo_precio"], available=True)
+        if not motor7._merece_la_pena(x, of):
+            ok7 = False
+            detalle.append("callaría en %s (viaje asequible)" % x["name"])
+    os.unlink(tmp7)
+    print("\n7) Calla si el viaje es imposible %s" % ("OK" if ok7 else "FALLA"))
+    if not ok7:
+        fallos.append("filtro de ruido: " + "; ".join(detalle))
+
+    # --- 8. Canal real de Telegram ------------------------------------------
     if "--telegram" in sys.argv and bajada_texto:
         real = Notifier(mac_alerts=False, open_browser=False)
         enviado = real.telegram(os.environ.get("TELEGRAM_CHAT_ID", ""),
                                 "🧪 <b>PRUEBA</b> — no es un aviso real, "
                                 "estoy comprobando que el canal funciona.\n\n" + bajada_texto)
-        print("\n7) Envío real a Telegram ........ %s" % ("OK" if enviado else "FALLA"))
+        print("\n8) Envío real a Telegram ........ %s" % ("OK" if enviado else "FALLA"))
         if not enviado:
             fallos.append("no se pudo enviar a Telegram")
 

@@ -106,6 +106,11 @@ Bajada de 3 € o más que no llega a ser mínimo. Incluye el contexto: entre qu
 precios se ha movido y cómo va respecto al primer día. *Un "ha bajado" a secas
 engaña: muchas veces es un rebote dentro de una subida.*
 
+**No se manda si el viaje es imposible.** Que baje 5 € un vuelo cuyo mejor viaje
+cuesta el doble del tope no es información útil. Se calla si la combinación más
+barata que lo incluye pasa del 125 % del tope, salvo que sea mínimo histórico:
+eso sí dice algo.
+
 ### 🎯 Ha entrado en tu objetivo
 El precio ha cruzado el `max_price` de esa ruta.
 
