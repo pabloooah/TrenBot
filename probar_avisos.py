@@ -192,13 +192,35 @@ def main():
     if not ok7:
         fallos.append("filtro de ruido: " + "; ".join(detalle))
 
-    # --- 8. Canal real de Telegram ------------------------------------------
+    # --- 8. Ningún proceso externo puede colgarse para siempre --------------
+    # Un subprocess.run sin timeout congela el bucle entero y el bot deja de
+    # avisar sin que nadie se entere: el silencio es idéntico al de "no hay
+    # novedades". Esto se comprueba sola cada vez, para que no vuelva a entrar.
+    import ast, subprocess as _sp
+    sueltos = []
+    ficheros = _sp.run(["git", "ls-files", "*.py"], capture_output=True,
+                       text=True, timeout=30).stdout.split()
+    for f in ficheros:
+        try:
+            arbol = ast.parse(open(f, encoding="utf-8").read())
+        except Exception:
+            continue
+        for n in ast.walk(arbol):
+            if (isinstance(n, ast.Call)
+                    and ast.unparse(n.func) in ("subprocess.run", "subprocess.check_output")
+                    and not any(k.arg == "timeout" for k in n.keywords)):
+                sueltos.append("%s:%d" % (f, n.lineno))
+    print("\n8) Nada puede quedarse colgado %s" % ("OK" if not sueltos else "FALLA"))
+    if sueltos:
+        fallos.append("proceso externo sin timeout en " + ", ".join(sueltos))
+
+    # --- 9. Canal real de Telegram ------------------------------------------
     if "--telegram" in sys.argv and bajada_texto:
         real = Notifier(mac_alerts=False, open_browser=False)
         enviado = real.telegram(os.environ.get("TELEGRAM_CHAT_ID", ""),
                                 "🧪 <b>PRUEBA</b> — no es un aviso real, "
                                 "estoy comprobando que el canal funciona.\n\n" + bajada_texto)
-        print("\n8) Envío real a Telegram ........ %s" % ("OK" if enviado else "FALLA"))
+        print("\n9) Envío real a Telegram ........ %s" % ("OK" if enviado else "FALLA"))
         if not enviado:
             fallos.append("no se pudo enviar a Telegram")
 

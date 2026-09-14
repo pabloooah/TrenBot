@@ -291,3 +291,18 @@ Se dejan apuntados porque cada uno costó encontrarlo y ninguno era evidente:
 10. **El silencio tapaba las bajadas posteriores** — se corrigió pasándose de frenada.
 11. **Falso "1 vuelo sin datos"** — se contaban los silencios de objetivo como ceguera.
 12. **Datos del vuelo a medias** — dos filtros salían antes de anotarlos.
+
+### Nada puede quedarse colgado
+Toda llamada a un proceso externo (git, la regeneración de la web, los avisos
+del Mac) lleva **timeout**. Sin él, un `git push` esperando congelaría el bucle
+para siempre y el bot dejaría de avisar **sin que nadie se entere**: el silencio
+de una avería es idéntico al de "no hay novedades". Si algo tarda, se salta esa
+vuelta y se reintenta en la siguiente.
+
+Además, al entrar a publicar se comprueba si quedó un **rebase a medias**. Uno
+interrumpido bloquea el repo: a partir de ahí ningún commit entra y la web se
+congela en silencio mientras Telegram sigue funcionando — la avería más difícil
+de ver. Si lo hay, se aborta solo.
+
+La prueba 8 de `probar_avisos.py` recorre el código y falla si aparece un
+proceso externo sin timeout, para que esto no vuelva a colarse.

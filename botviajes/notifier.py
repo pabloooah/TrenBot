@@ -91,12 +91,14 @@ class Notifier:
                 ["osascript", "-e",
                  'display notification %r with title %r sound name "Glass"'
                  % (message, title)],
-                check=False,
+                check=False, timeout=15,
             )
             for _ in range(3):
-                subprocess.run(["afplay", "/System/Library/Sounds/Glass.aiff"], check=False)
+                subprocess.run(["afplay", "/System/Library/Sounds/Glass.aiff"],
+                               check=False, timeout=15)
             subprocess.run(
-                ["say", "¡Hay billetes disponibles! ¡Corre a comprar!"], check=False
+                ["say", "¡Hay billetes disponibles! ¡Corre a comprar!"],
+                check=False, timeout=20,
             )
         except Exception as e:
             print("  [mac] error:", e)
@@ -105,6 +107,6 @@ class Notifier:
         if not self.open_browser or not url or not IS_MAC:
             return
         try:
-            subprocess.run(["open", url], check=False)
+            subprocess.run(["open", url], check=False, timeout=15)
         except Exception:
             pass

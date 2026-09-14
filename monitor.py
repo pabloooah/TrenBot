@@ -50,8 +50,12 @@ def desplegar():
     fallaba siempre.
     """
     import sys as _s
-    r = subprocess.run([_s.executable, os.path.join(RAIZ, "publicar.py")],
-                       cwd=RAIZ, capture_output=True, text=True)
+    try:
+        r = subprocess.run([_s.executable, os.path.join(RAIZ, "publicar.py")],
+                           cwd=RAIZ, capture_output=True, text=True, timeout=300)
+    except subprocess.TimeoutExpired:
+        print("   publicar tardó demasiado; se reintenta en la siguiente vuelta")
+        return False
     ok = r.returncode == 0
     print("   %s" % (r.stdout.strip().splitlines()[-1] if ok and r.stdout.strip()
                      else ("publicado" if ok else "no se pudo publicar: "
@@ -65,8 +69,11 @@ def una_vuelta(engine, desplegar_web=True):
     print("\n[%s] revisando %d rutas..." % (sello, activas))
     engine.check_once()                       # consulta + avisos de Telegram
 
-    subprocess.run([sys.executable, os.path.join(RAIZ, "actualizar_web.py")],
-                   cwd=RAIZ, capture_output=True, text=True)
+    try:
+        subprocess.run([sys.executable, os.path.join(RAIZ, "actualizar_web.py")],
+                       cwd=RAIZ, capture_output=True, text=True, timeout=300)
+    except subprocess.TimeoutExpired:
+        print("   la web tardó demasiado en regenerarse; se reintenta luego")
     nueva = huella_precios()
     anterior = open(HUELLA).read().strip() if os.path.exists(HUELLA) else ""
     if nueva == anterior:

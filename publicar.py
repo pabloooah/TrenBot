@@ -15,12 +15,35 @@ FICHEROS = ["historico.json", "avisos.json", os.path.join("web", "datos.json"),
             os.path.join("data", "wizz_horarios.json")]
 
 
+class _Fallo:
+    returncode = 1
+    stdout = stderr = ""
+
+
 def git(*a):
-    return subprocess.run(("git",) + a, cwd=RAIZ, capture_output=True,
-                          text=True, timeout=120)
+    """Un git que nunca se queda colgado: si tarda, se da por fallido."""
+    try:
+        return subprocess.run(("git",) + a, cwd=RAIZ, capture_output=True,
+                              text=True,
+                              timeout=float(os.environ.get("GIT_TIMEOUT_S", "120")))
+    except subprocess.TimeoutExpired:
+        print("git %s tardó demasiado" % " ".join(a[:2]))
+        return _Fallo()
+
+
+def soltar_rebase_a_medias():
+    """Un rebase interrumpido deja el repo bloqueado: a partir de ahí *todos*
+    los commits fallan y la web se congela en silencio mientras el bot sigue
+    avisando por Telegram, que es la avería más difícil de detectar. Si
+    encontramos uno a medias, lo abortamos antes de seguir."""
+    g = os.path.join(RAIZ, ".git")
+    if any(os.path.exists(os.path.join(g, d)) for d in ("rebase-merge", "rebase-apply")):
+        print("había un rebase a medias; lo aborto")
+        git("rebase", "--abort")
 
 
 def main():
+    soltar_rebase_a_medias()
     hay = [f for f in FICHEROS if os.path.exists(os.path.join(RAIZ, f))]
     git("add", *hay)
     if git("diff", "--cached", "--quiet").returncode == 0:

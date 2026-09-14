@@ -152,12 +152,21 @@ def commit_al_repo(rutas, mensaje):
         # Sin timeout, un git que se queda esperando congelaría el bucle
         # entero y el bot dejaría de avisar sin que nadie se entere.
         try:
-            return subprocess.run(a, capture_output=True, text=True, timeout=120)
+            limite = float(os.environ.get("GIT_TIMEOUT_S", "120"))
+            return subprocess.run(a, capture_output=True, text=True, timeout=limite)
         except subprocess.TimeoutExpired:
             print("  [git] '%s' tardó demasiado; se reintenta luego" % " ".join(a[:2]))
             class _F:
                 returncode = 1
             return _F()
+
+    # Un rebase interrumpido (p. ej. si el propio --abort se colgó) deja el
+    # repo bloqueado y a partir de ahí ningún commit entra: la web se congelaría
+    # en silencio mientras Telegram sigue funcionando. Se cura al entrar.
+    if any(os.path.exists(os.path.join(".git", d))
+           for d in ("rebase-merge", "rebase-apply")):
+        print("  [git] había un rebase a medias; lo aborto")
+        run("git", "rebase", "--abort")
 
     branch = os.environ.get("GIT_BRANCH", "main")
     run("git", "config", "user.email", "bot@users.noreply.github.com")
