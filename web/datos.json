@@ -37,14 +37,14 @@
      "sale": "21:10",
      "llega": "00:48",
      "ref": 99.99,
-     "precio": 79.99,
+     "precio": 89.99,
      "etiqueta": "W6",
      "url": "https://www.wizzair.com/es-es/booking/select-flight/ALC/GDN/2026-10-08/null/2/0/0/null",
      "plazas": null,
      "duracion": "3:38",
      "minimo": 79.99,
      "maximo": 114.99,
-     "visto": "2026-09-14 14:48",
+     "visto": "2026-09-14 15:50",
      "estado": "ok",
      "historico": [
       [
@@ -62,9 +62,13 @@
       [
        "2026-09-14 06:02",
        79.99
+      ],
+      [
+       "2026-09-14 15:50",
+       89.99
       ]
      ],
-     "variacion": -20.0
+     "variacion": -10.0
     },
     {
      "tipo": "vuelo",
@@ -86,7 +90,7 @@
      "duracion": "3:38",
      "minimo": 69.99,
      "maximo": 69.99,
-     "visto": "2026-09-14 14:48",
+     "visto": "2026-09-14 15:50",
      "estado": "ok",
      "historico": [
       [
@@ -115,8 +119,8 @@
      "texto": "Mañana libre y vuelo a las 16:45; en Alicante a las 20:23."
     }
    ],
-   "total_persona": 149.98,
-   "total_grupo": 299.96,
+   "total_persona": 159.98,
+   "total_grupo": 319.96,
    "ida_fecha": "2026-10-08",
    "ida_hora": "21:10",
    "ida_iata": "GDN",
@@ -165,7 +169,7 @@
      "etiqueta": "precio orientativo",
      "url": "https://www.wizzair.com/es-es/booking/select-flight/ALC/BTS/2026-10-09/null/2/0/0/null",
      "plazas": null,
-     "visto": "2026-09-14 14:48",
+     "visto": "2026-09-14 15:49",
      "estado": "orientativo",
      "historico": [
       [
@@ -237,7 +241,7 @@
      "duracion": "03:00",
      "minimo": 40.96,
      "maximo": 54.91,
-     "visto": "2026-09-14 14:48",
+     "visto": "2026-09-14 15:49",
      "estado": "ok",
      "historico": [
       [
@@ -392,7 +396,7 @@
      "duracion": "03:05",
      "minimo": 92.19,
      "maximo": 175.6,
-     "visto": "2026-09-14 14:48",
+     "visto": "2026-09-14 15:49",
      "estado": "ok",
      "historico": [
       [
@@ -499,7 +503,7 @@
      "duracion": "03:00",
      "minimo": 40.96,
      "maximo": 54.91,
-     "visto": "2026-09-14 14:48",
+     "visto": "2026-09-14 15:49",
      "estado": "ok",
      "historico": [
       [
@@ -650,7 +654,7 @@
      "etiqueta": "precio orientativo",
      "url": "https://www.wizzair.com/es-es/booking/select-flight/ALC/BTS/2026-10-09/null/2/0/0/null",
      "plazas": null,
-     "visto": "2026-09-14 14:48",
+     "visto": "2026-09-14 15:49",
      "estado": "orientativo",
      "historico": [
       [
@@ -713,7 +717,7 @@
      "duracion": "3:15",
      "minimo": 54.89,
      "maximo": 114.99,
-     "visto": "2026-09-14 14:48",
+     "visto": "2026-09-14 15:49",
      "estado": "ok",
      "historico": [
       [
@@ -813,7 +817,7 @@
      "etiqueta": "precio orientativo",
      "url": "https://www.wizzair.com/es-es/booking/select-flight/ALC/BTS/2026-10-09/null/2/0/0/null",
      "plazas": null,
-     "visto": "2026-09-14 14:48",
+     "visto": "2026-09-14 15:49",
      "estado": "orientativo",
      "historico": [
       [
@@ -885,7 +889,7 @@
      "duracion": "02:40",
      "minimo": 74.99,
      "maximo": 173.99,
-     "visto": "2026-09-14 14:48",
+     "visto": "2026-09-14 15:49",
      "estado": "ok",
      "historico": [
       [
@@ -1044,7 +1048,7 @@
      "duracion": "02:45",
      "minimo": 95.19,
      "maximo": 231.88,
-     "visto": "2026-09-14 14:48",
+     "visto": "2026-09-14 15:49",
      "estado": "ok",
      "historico": [
       [
@@ -1168,7 +1172,7 @@
      "duracion": "03:00",
      "minimo": 40.96,
      "maximo": 54.91,
-     "visto": "2026-09-14 14:48",
+     "visto": "2026-09-14 15:49",
      "estado": "ok",
      "historico": [
       [
@@ -1326,7 +1330,7 @@
      "duracion": "02:45",
      "minimo": 95.19,
      "maximo": 231.88,
-     "visto": "2026-09-14 14:48",
+     "visto": "2026-09-14 15:49",
      "estado": "ok",
      "historico": [
       [
@@ -1441,7 +1445,7 @@
      "duracion": "3:15",
      "minimo": 54.89,
      "maximo": 114.99,
-     "visto": "2026-09-14 14:48",
+     "visto": "2026-09-14 15:49",
      "estado": "ok",
      "historico": [
       [
@@ -1516,6 +1520,6 @@
    "dentro_presupuesto": false
   }
  ],
- "actualizado": "2026-09-14 14:48",
- "actualizado_iso": "2026-09-14T14:48:24.029022+00:00"
+ "actualizado": "2026-09-14 15:50",
+ "actualizado_iso": "2026-09-14T15:50:03.275296+00:00"
 }
