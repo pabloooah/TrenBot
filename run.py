@@ -81,6 +81,19 @@ def latido_diario(engine, notifier, destino, horas=12):
     ciegas = [k for k in engine.avisos if k.startswith("ceguera:")]
     lineas += ["", "Vigilando %d vuelos.%s" % (len(activas),
                " ⚠️ %d sin datos ahora mismo." % len(ciegas) if ciegas else "")]
+    # Wizz a veces deja de publicar precio de un vuelo y responde "míralo en la
+    # web". El bot guarda entonces un precio ORIENTATIVO: sirve para no quedarse
+    # ciego, pero NO se puede comprar a ese precio. Sin decirlo aquí, un vuelo
+    # podía llevar días con una cifra no firme y parecer tan sólida como el
+    # resto, que es justo lo contrario de fiarse de lo que cuento.
+    flojos = [w for w in activas
+              if w.get("ultimo_orientativo")
+              and (w.get("orientativo_visto") or "") > (w.get("ultimo_visto") or "")]
+    for w in flojos:
+        desde = (w.get("ultimo_visto") or "?")[:10]
+        lineas.append("⚠️ <b>%s</b>: la aerolínea no publica precio firme desde "
+                      "el %s; lo que ves (%.2f €) es orientativo y podría no ser "
+                      "el real." % (w["name"], desde, w["ultimo_orientativo"]))
     # Contar lo que se ha callado: si no, un silencio largo no se distingue de
     # una avería, que es justo lo que pasó.
     n = getattr(engine, "silenciadas", 0)

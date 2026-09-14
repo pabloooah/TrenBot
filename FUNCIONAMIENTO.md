@@ -306,3 +306,14 @@ de ver. Si lo hay, se aborta solo.
 
 La prueba 8 de `probar_avisos.py` recorre el código y falla si aparece un
 proceso externo sin timeout, para que esto no vuelva a colarse.
+
+### Precios orientativos
+Wizz a veces deja de publicar el precio de un vuelo y responde "míralo en la
+web" (`priceType: checkPrice`). El bot guarda entonces un precio **orientativo**:
+sirve para no quedarse ciego, pero **no se puede comprar a ese precio**. Nunca
+entra en la serie histórica ni dispara un aviso de bajada.
+
+La web lo etiqueta como *precio orientativo*, y desde ahora el resumen de cada
+12 h también lo dice por Telegram, con la fecha del último precio firme. Sin eso,
+un vuelo podía llevar días con una cifra no firme pareciendo tan sólida como el
+resto.
