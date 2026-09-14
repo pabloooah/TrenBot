@@ -44,7 +44,7 @@
      "duracion": "3:38",
      "minimo": 79.99,
      "maximo": 114.99,
-     "visto": "2026-09-14 18:08",
+     "visto": "2026-09-14 18:24",
      "estado": "ok",
      "historico": [
       [
@@ -83,22 +83,26 @@
      "sale": "16:45",
      "llega": "20:23",
      "ref": 69.99,
-     "precio": 69.99,
+     "precio": 79.99,
      "etiqueta": "W6",
      "url": "https://www.wizzair.com/es-es/booking/select-flight/GDN/ALC/2026-10-11/null/2/0/0/null",
      "plazas": null,
      "duracion": "3:38",
      "minimo": 69.99,
-     "maximo": 69.99,
-     "visto": "2026-09-14 18:08",
+     "maximo": 79.99,
+     "visto": "2026-09-14 18:24",
      "estado": "ok",
      "historico": [
       [
        "2026-09-13 23:20",
        69.99
+      ],
+      [
+       "2026-09-14 18:24",
+       79.99
       ]
      ],
-     "variacion": 0.0
+     "variacion": 10.0
     }
    ],
    "itinerario": [
@@ -119,8 +123,8 @@
      "texto": "Mañana libre y vuelo a las 16:45; en Alicante a las 20:23."
     }
    ],
-   "total_persona": 159.98,
-   "total_grupo": 319.96,
+   "total_persona": 169.98,
+   "total_grupo": 339.96,
    "ida_fecha": "2026-10-08",
    "ida_hora": "21:10",
    "ida_iata": "GDN",
@@ -138,7 +142,7 @@
    "llega_noche": true,
    "vuelve_lunes": false,
    "total_referencia": 169.98,
-   "dentro_presupuesto": true
+   "dentro_presupuesto": false
   },
   {
    "id": "bratislava-praga",
@@ -169,7 +173,7 @@
      "etiqueta": "precio orientativo",
      "url": "https://www.wizzair.com/es-es/booking/select-flight/ALC/BTS/2026-10-09/null/2/0/0/null",
      "plazas": null,
-     "visto": "2026-09-14 18:08",
+     "visto": "2026-09-14 18:24",
      "estado": "orientativo",
      "historico": [
       [
@@ -241,7 +245,7 @@
      "duracion": "03:00",
      "minimo": 40.96,
      "maximo": 54.91,
-     "visto": "2026-09-14 18:08",
+     "visto": "2026-09-14 18:24",
      "estado": "ok",
      "historico": [
       [
@@ -396,7 +400,7 @@
      "duracion": "03:05",
      "minimo": 92.19,
      "maximo": 175.6,
-     "visto": "2026-09-14 18:08",
+     "visto": "2026-09-14 18:24",
      "estado": "ok",
      "historico": [
       [
@@ -503,7 +507,7 @@
      "duracion": "03:00",
      "minimo": 40.96,
      "maximo": 54.91,
-     "visto": "2026-09-14 18:08",
+     "visto": "2026-09-14 18:24",
      "estado": "ok",
      "historico": [
       [
@@ -654,7 +658,7 @@
      "etiqueta": "precio orientativo",
      "url": "https://www.wizzair.com/es-es/booking/select-flight/ALC/BTS/2026-10-09/null/2/0/0/null",
      "plazas": null,
-     "visto": "2026-09-14 18:08",
+     "visto": "2026-09-14 18:24",
      "estado": "orientativo",
      "historico": [
       [
@@ -717,7 +721,7 @@
      "duracion": "3:15",
      "minimo": 54.89,
      "maximo": 114.99,
-     "visto": "2026-09-14 18:08",
+     "visto": "2026-09-14 18:24",
      "estado": "ok",
      "historico": [
       [
@@ -817,7 +821,7 @@
      "etiqueta": "precio orientativo",
      "url": "https://www.wizzair.com/es-es/booking/select-flight/ALC/BTS/2026-10-09/null/2/0/0/null",
      "plazas": null,
-     "visto": "2026-09-14 18:08",
+     "visto": "2026-09-14 18:24",
      "estado": "orientativo",
      "historico": [
       [
@@ -889,7 +893,7 @@
      "duracion": "02:40",
      "minimo": 74.99,
      "maximo": 173.99,
-     "visto": "2026-09-14 18:08",
+     "visto": "2026-09-14 18:24",
      "estado": "ok",
      "historico": [
       [
@@ -1048,7 +1052,7 @@
      "duracion": "02:45",
      "minimo": 95.19,
      "maximo": 231.88,
-     "visto": "2026-09-14 18:08",
+     "visto": "2026-09-14 18:24",
      "estado": "ok",
      "historico": [
       [
@@ -1172,7 +1176,7 @@
      "duracion": "03:00",
      "minimo": 40.96,
      "maximo": 54.91,
-     "visto": "2026-09-14 18:08",
+     "visto": "2026-09-14 18:24",
      "estado": "ok",
      "historico": [
       [
@@ -1330,7 +1334,7 @@
      "duracion": "02:45",
      "minimo": 95.19,
      "maximo": 231.88,
-     "visto": "2026-09-14 18:08",
+     "visto": "2026-09-14 18:24",
      "estado": "ok",
      "historico": [
       [
@@ -1445,7 +1449,7 @@
      "duracion": "3:15",
      "minimo": 54.89,
      "maximo": 114.99,
-     "visto": "2026-09-14 18:08",
+     "visto": "2026-09-14 18:24",
      "estado": "ok",
      "historico": [
       [
@@ -1520,6 +1524,6 @@
    "dentro_presupuesto": false
   }
  ],
- "actualizado": "2026-09-14 18:08",
- "actualizado_iso": "2026-09-14T18:08:55.038590+00:00"
+ "actualizado": "2026-09-14 18:24",
+ "actualizado_iso": "2026-09-14T18:24:20.229860+00:00"
 }
