@@ -118,10 +118,12 @@ El precio ha cruzado el `max_price` de esa ruta.
 Una ruta que antes daba precio lleva **3 consultas seguidas** sin dar nada. Un
 solo mensaje para todas las rutas afectadas, nombrando la aerolínea.
 
-### 👋 Resumen del día
-Una vez cada 20 h, con la mejor combinación. **Si un día no llega, algo va
-mal**: es la única forma de distinguir "no hay novedades" de "el bot está
-muerto".
+### 👋 Sigo vigilando
+**Dos veces al día** (cada 12 h), con la mejor combinación del momento y cuántas
+bajadas se han callado por ser ruido. **Si no llega, algo va mal**: es la única
+forma de distinguir "no hay novedades" de "el bot está muerto". Se pasó de 20 h
+a 12 porque, con el filtro de ruido, veinte horas de silencio no se distinguían
+de una avería.
 
 ### Todos los avisos de vuelo incluyen
 

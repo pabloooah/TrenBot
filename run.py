@@ -41,7 +41,7 @@ def _watch_to_yaml(w):
     return d
 
 
-def latido_diario(engine, notifier, destino, horas=20):
+def latido_diario(engine, notifier, destino, horas=12):
     """Un resumen al día, para que el silencio no se confunda con normalidad.
 
     Si el job se muriera, dejara de arrancar o alguien desactivara el workflow,
@@ -56,7 +56,7 @@ def latido_diario(engine, notifier, destino, horas=20):
     engine.avisos[CLAVE] = {"t": ahora, "cuando": _t.strftime("%Y-%m-%d %H:%M")}
     engine._guardar_avisos()
 
-    lineas = ["👋 <b>Sigo vigilando</b> — resumen del día", ""]
+    lineas = ["👋 <b>Sigo vigilando</b>", ""]
     try:
         datos = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                             "web", "datos.json"), encoding="utf-8"))
@@ -80,8 +80,17 @@ def latido_diario(engine, notifier, destino, horas=20):
     # "objetivo", y contarlos avisaba de vuelos sin datos que sí los tenían.
     ciegas = [k for k in engine.avisos if k.startswith("ceguera:")]
     lineas += ["", "Vigilando %d vuelos.%s" % (len(activas),
-               " ⚠️ %d sin datos ahora mismo." % len(ciegas) if ciegas else ""),
-               "🌐 https://viaje-octubre.vercel.app"]
+               " ⚠️ %d sin datos ahora mismo." % len(ciegas) if ciegas else "")]
+    # Contar lo que se ha callado: si no, un silencio largo no se distingue de
+    # una avería, que es justo lo que pasó.
+    n = getattr(engine, "silenciadas", 0)
+    if n:
+        lineas.append("He visto %d bajada%s que no te he contado porque el viaje "
+                      "seguía muy por encima del tope." % (n, "s" if n > 1 else ""))
+        engine.silenciadas = 0
+    else:
+        lineas.append("Sin bajadas que merezcan la pena desde el último resumen.")
+    lineas.append("🌐 https://viaje-octubre.vercel.app")
     notifier.telegram(destino, "\n".join(lineas))
     print("  [latido] resumen diario enviado")
 
@@ -94,8 +103,12 @@ def publicar_web():
     """
     import subprocess
     raiz = os.path.dirname(os.path.abspath(__file__))
-    r = subprocess.run([sys.executable, os.path.join(raiz, "actualizar_web.py")],
-                       cwd=raiz, capture_output=True, text=True)
+    try:
+        r = subprocess.run([sys.executable, os.path.join(raiz, "actualizar_web.py")],
+                           cwd=raiz, capture_output=True, text=True, timeout=300)
+    except subprocess.TimeoutExpired:
+        print("  [web] tardó demasiado en regenerarse; se reintenta luego")
+        return
     if r.returncode != 0:
         print("  [web] no se pudo regenerar:", (r.stderr or "")[-200:].strip())
         return
@@ -136,7 +149,15 @@ def commit_al_repo(rutas, mensaje):
     import subprocess
 
     def run(*a):
-        return subprocess.run(a, capture_output=True, text=True)
+        # Sin timeout, un git que se queda esperando congelaría el bucle
+        # entero y el bot dejaría de avisar sin que nadie se entere.
+        try:
+            return subprocess.run(a, capture_output=True, text=True, timeout=120)
+        except subprocess.TimeoutExpired:
+            print("  [git] '%s' tardó demasiado; se reintenta luego" % " ".join(a[:2]))
+            class _F:
+                returncode = 1
+            return _F()
 
     branch = os.environ.get("GIT_BRANCH", "main")
     run("git", "config", "user.email", "bot@users.noreply.github.com")

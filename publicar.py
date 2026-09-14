@@ -16,7 +16,8 @@ FICHEROS = ["historico.json", "avisos.json", os.path.join("web", "datos.json"),
 
 
 def git(*a):
-    return subprocess.run(("git",) + a, cwd=RAIZ, capture_output=True, text=True)
+    return subprocess.run(("git",) + a, cwd=RAIZ, capture_output=True,
+                          text=True, timeout=120)
 
 
 def main():

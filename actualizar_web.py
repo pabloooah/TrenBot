@@ -223,7 +223,7 @@ def main():
         # Publicar es subir el commit: Vercel está conectado al repositorio.
         print("\nPublicando...")
         r = subprocess.run([sys.executable, os.path.join(RAIZ, "publicar.py")],
-                           cwd=RAIZ, capture_output=True, text=True)
+                           cwd=RAIZ, capture_output=True, text=True, timeout=300)
         print((r.stdout or r.stderr).strip()[-400:])
 
 

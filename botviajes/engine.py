@@ -191,6 +191,7 @@ class Engine:
         self._stop = threading.Event()
         self.paused = False                     # /pausa: no sondea ni avisa, sigue escuchando
         self.historial_cambiado = False         # ¿hay precios nuevos que publicar?
+        self.silenciadas = 0                    # bajadas calladas por ser ruido
         self.shutdown_requested = False         # /apagar: el bucle debe terminar
         # El histórico de precios va en su propio fichero SIN datos personales,
         # para poder subirlo al repo: así el bot de la nube no pierde la memoria
@@ -588,6 +589,7 @@ class Engine:
         mejor_total = min(v["total"] for v in viajes)
         if mejor_total <= tope * margen:
             return True
+        self.silenciadas += 1
         print("  [%s] bajada de %.2f € pero el viaje más barato con ese vuelo "
               "cuesta %.2f € (tope %.0f): no aviso"
               % (watch["name"], oferta.price, mejor_total, tope))
