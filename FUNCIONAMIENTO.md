@@ -317,3 +317,36 @@ La web lo etiqueta como *precio orientativo*, y desde ahora el resumen de cada
 12 h también lo dice por Telegram, con la fecha del último precio firme. Sin eso,
 un vuelo podía llevar días con una cifra no firme pareciendo tan sólida como el
 resto.
+
+### ¿Nos sirven precios cacheados o "de bot"? (comprobado el 15-sep-2026)
+Sospecha razonable, así que se midió en vez de suponerlo. `diagnostico.py` hace
+las mismas consultas desde dos sitios y se compara.
+
+**Resultado: los precios son reales y nadie nos discrimina.**
+
+- Ryanair responde `x-cache: Miss from cloudfront` y `cache-control: no-store`
+  en **todas** las peticiones: no hay caché de por medio. La misma consulta con
+  cookies, sin cookies, con mercado `en-gb`, con parámetro anticaché aleatorio y
+  con huella TLS de Safari devuelve **el mismo precio y las mismas plazas**.
+- Desde la IP de casa (España) y desde la de GitHub (Azure) los cinco vuelos dan
+  cifras **idénticas al céntimo**, incluida la misma falta de precio firme en
+  Bratislava. Si nos sirvieran precios inflados por estar fichados, dos IPs sin
+  relación no coincidirían.
+- Los tipos de cambio se comprobaron contra el XML oficial del BCE: desvío
+  **0,0000 %**.
+
+**Lo que sí es cierto: Wizz nos tiene marcados.** `/search/search` devuelve 429
+siempre — desde el Mac, desde la nube, con sesión virgen, calentando su web
+antes y esperando 20 s. Y su web lanza un captcha de "Confirme que es humano" a
+un navegador automatizado. No es un límite que se pueda esperar: es un bloqueo.
+
+El bot ya lo esquiva cayendo a `/search/timetable`, que **sí funciona y da
+precios firmes correctos**. Pero ese camino no trae una cosa: **las plazas que
+quedan**. Por eso en los vuelos de Ryanair se ve "quedan 5" y en los de Wizz no.
+Es la señal que avisa de que una tarifa va a subir, y en Wizz vamos a ciegas:
+por eso el Gdansk de vuelta subió 10 € de golpe sin previo aviso.
+
+Un detalle de divisa: Wizz cotiza distinto según el país de compra. El mismo
+GDN→ALC vale 409 PLN (94,24 €) comprándolo en Polonia y 89,99 € comprándolo en
+euros. El bot fuerza euros poniendo un tramo de zona euro primero en la consulta,
+así que enseña la tarifa **más barata**, que es la que pagarías tú.
