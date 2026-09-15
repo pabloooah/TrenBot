@@ -350,3 +350,27 @@ Un detalle de divisa: Wizz cotiza distinto según el país de compra. El mismo
 GDN→ALC vale 409 PLN (94,24 €) comprándolo en Polonia y 89,99 € comprándolo en
 euros. El bot fuerza euros poniendo un tramo de zona euro primero en la consulta,
 así que enseña la tarifa **más barata**, que es la que pagarías tú.
+
+### ¿Y si comprar desde el otro país fuera más barato?
+Wizz cotiza el mismo asiento en la divisa del país de salida y **no siempre al
+mismo cambio**. El bot pide en euros, pero eso era una suposición, así que se
+midió ruta por ruta (15-sep-2026):
+
+| Ruta | En divisa local | En euros | Gana |
+|---|---|---|---|
+| ALC→GDN | 409 PLN = 94,24 € | 89,99 € | euros, +4,25 € |
+| GDN→ALC | 409 PLN = 94,24 € | 89,99 € | euros, +4,25 € |
+| BUD→ALC | 38 290 HUF = 104,61 € | 99,99 € | euros, +4,62 € |
+| BTS→ALC | 124,99 € | 124,99 € | empate (Eslovaquia ya es euro) |
+
+**En Ryanair no hay nada que rascar**: la divisa la fija el país del aeropuerto
+de salida y el parámetro de mercado no cambia el precio. Comprobado en los 5
+vuelos contra 8 mercados (`es-es`, `cs-cz`, `pl-pl`, `de-de`, `it-it`, `en-ie`,
+`en-gb`, `hu-hu`): idéntico en todos.
+
+Hoy el euro gana siempre, pero eso es una tarifa, no una ley. `divisas.py`
+compara las dos divisas de cada ruta **una vez al día** desde el bucle y avisa si
+alguna vez cambia. El umbral es del **3 %**: comparar al cambio del BCE engaña,
+porque pagando en moneda extranjera el banco cobra su comisión (1,5-3 % es lo
+normal), así que un ahorro menor que eso no es un ahorro. También se puede
+lanzar a mano: `python divisas.py`.

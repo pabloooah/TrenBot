@@ -108,6 +108,38 @@ def latido_diario(engine, notifier, destino, horas=12):
     print("  [latido] resumen diario enviado")
 
 
+def revision_divisas(engine, notifier, destino, horas=24):
+    """Una vez al día: ¿alguna plaza sale más barata pagando en moneda local?
+
+    El bot pide siempre en euros, y hoy eso es lo más barato en todas las rutas
+    (medido el 15-sep-2026). Pero es una tarifa, no una ley: si Wizz cambia el
+    cambio que aplica, esto lo pilla en vez de darlo por hecho para siempre.
+    """
+    import time as _t
+    CLAVE = "_divisas"
+    ahora = _t.time()
+    if ahora - (engine.avisos.get(CLAVE) or {}).get("t", 0) < horas * 3600:
+        return
+    engine.avisos[CLAVE] = {"t": ahora, "cuando": _t.strftime("%Y-%m-%d %H:%M")}
+    engine._guardar_avisos()
+    try:
+        import divisas
+        rutas = [(w["origin"], w["destination"], w["date"])
+                 for w in engine.watches
+                 if w.get("enabled", True) and "wizz" in (w.get("providers") or [])]
+        if not rutas:
+            return
+        texto = divisas.texto_aviso(divisas.revisar(rutas))
+        if texto:
+            notifier.telegram(destino, texto)
+            print("  [divisas] aviso enviado: hay tarifa más barata fuera del euro")
+        else:
+            print("  [divisas] revisadas %d rutas; el euro sigue siendo lo más barato"
+                  % len(rutas))
+    except Exception as e:
+        print("  [divisas] no se pudo revisar:", str(e)[:120])
+
+
 def publicar_web():
     """Regenera web/datos.json con los precios de ahora y lo sube al repo.
 
@@ -315,6 +347,7 @@ def main():
                     if engine.historial_cambiado:
                         publicar_web()
                     latido_diario(engine, notifier, owner_chats)
+                    revision_divisas(engine, notifier, owner_chats)
                 except Exception as e:
                     print("  error en pasada:", e)
                 last_check = _t.time()
