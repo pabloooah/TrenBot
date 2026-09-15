@@ -42,7 +42,7 @@
      "etiqueta": "precio orientativo",
      "url": "https://www.wizzair.com/es-es/booking/select-flight/ALC/BTS/2026-10-09/null/2/0/0/null",
      "plazas": null,
-     "visto": "2026-09-15 18:54",
+     "visto": "2026-09-15 22:51",
      "estado": "orientativo",
      "historico": [
       [
@@ -114,7 +114,7 @@
      "duracion": "03:00",
      "minimo": 40.96,
      "maximo": 54.91,
-     "visto": "2026-09-15 18:54",
+     "visto": "2026-09-15 22:51",
      "estado": "ok",
      "historico": [
       [
@@ -269,7 +269,7 @@
      "duracion": "03:05",
      "minimo": 92.19,
      "maximo": 175.6,
-     "visto": "2026-09-15 18:54",
+     "visto": "2026-09-15 22:51",
      "estado": "ok",
      "historico": [
       [
@@ -380,7 +380,7 @@
      "duracion": "03:00",
      "minimo": 40.96,
      "maximo": 54.91,
-     "visto": "2026-09-15 18:54",
+     "visto": "2026-09-15 22:51",
      "estado": "ok",
      "historico": [
       [
@@ -533,7 +533,7 @@
      "duracion": "3:38",
      "minimo": 79.99,
      "maximo": 114.99,
-     "visto": "2026-09-15 18:54",
+     "visto": "2026-09-15 22:51",
      "estado": "ok",
      "historico": [
       [
@@ -587,7 +587,7 @@
      "duracion": "3:38",
      "minimo": 69.99,
      "maximo": 89.99,
-     "visto": "2026-09-15 18:54",
+     "visto": "2026-09-15 22:51",
      "estado": "ok",
      "historico": [
       [
@@ -674,7 +674,7 @@
      "etiqueta": "precio orientativo",
      "url": "https://www.wizzair.com/es-es/booking/select-flight/ALC/BTS/2026-10-09/null/2/0/0/null",
      "plazas": null,
-     "visto": "2026-09-15 18:54",
+     "visto": "2026-09-15 22:51",
      "estado": "orientativo",
      "historico": [
       [
@@ -737,7 +737,7 @@
      "duracion": "3:15",
      "minimo": 54.89,
      "maximo": 114.99,
-     "visto": "2026-09-15 18:54",
+     "visto": "2026-09-15 22:51",
      "estado": "ok",
      "historico": [
       [
@@ -837,7 +837,7 @@
      "etiqueta": "precio orientativo",
      "url": "https://www.wizzair.com/es-es/booking/select-flight/ALC/BTS/2026-10-09/null/2/0/0/null",
      "plazas": null,
-     "visto": "2026-09-15 18:54",
+     "visto": "2026-09-15 22:51",
      "estado": "orientativo",
      "historico": [
       [
@@ -909,7 +909,7 @@
      "duracion": "02:40",
      "minimo": 74.99,
      "maximo": 173.99,
-     "visto": "2026-09-15 18:54",
+     "visto": "2026-09-15 22:51",
      "estado": "ok",
      "historico": [
       [
@@ -1061,20 +1061,16 @@
      "sale": "20:15",
      "llega": "23:00",
      "ref": 96.19,
-     "precio": 257.39,
+     "precio": 282.6,
      "etiqueta": "FR1568 (Lauda Europe) · 2 plazas",
      "url": "https://www.ryanair.com/es/es/trip/flights/select?adults=2&teens=0&children=0&infants=0&dateOut=2026-10-08&isConnectedFlight=false&discount=0&isReturn=false&originIata=ALC&destinationIata=VIE",
      "plazas": 2,
      "duracion": "02:45",
      "minimo": 95.19,
-     "maximo": 257.39,
-     "visto": "2026-09-15 18:54",
+     "maximo": 282.6,
+     "visto": "2026-09-15 22:51",
      "estado": "ok",
      "historico": [
-      [
-       "2026-09-07 22:48",
-       133.72
-      ],
       [
        "2026-09-07 23:09",
        132.72
@@ -1150,9 +1146,13 @@
       [
        "2026-09-15 10:46",
        257.39
+      ],
+      [
+       "2026-09-15 22:51",
+       282.6
       ]
      ],
-     "variacion": 161.2
+     "variacion": 186.41
     },
     {
      "tipo": "tierra",
@@ -1192,7 +1192,7 @@
      "duracion": "03:00",
      "minimo": 40.96,
      "maximo": 54.91,
-     "visto": "2026-09-15 18:54",
+     "visto": "2026-09-15 22:51",
      "estado": "ok",
      "historico": [
       [
@@ -1297,8 +1297,8 @@
      "texto": "Tren a Praga (4h), día allí, tren a Pardubice (1h) y vuelo a las 22:00."
     }
    ],
-   "total_persona": 299.32,
-   "total_grupo": 598.64,
+   "total_persona": 324.53,
+   "total_grupo": 649.06,
    "ida_fecha": "2026-10-08",
    "ida_hora": "20:15",
    "ida_iata": "VIE",
@@ -1343,20 +1343,16 @@
      "sale": "20:15",
      "llega": "23:00",
      "ref": 96.19,
-     "precio": 257.39,
+     "precio": 282.6,
      "etiqueta": "FR1568 (Lauda Europe) · 2 plazas",
      "url": "https://www.ryanair.com/es/es/trip/flights/select?adults=2&teens=0&children=0&infants=0&dateOut=2026-10-08&isConnectedFlight=false&discount=0&isReturn=false&originIata=ALC&destinationIata=VIE",
      "plazas": 2,
      "duracion": "02:45",
      "minimo": 95.19,
-     "maximo": 257.39,
-     "visto": "2026-09-15 18:54",
+     "maximo": 282.6,
+     "visto": "2026-09-15 22:51",
      "estado": "ok",
      "historico": [
-      [
-       "2026-09-07 22:48",
-       133.72
-      ],
       [
        "2026-09-07 23:09",
        132.72
@@ -1432,9 +1428,13 @@
       [
        "2026-09-15 10:46",
        257.39
+      ],
+      [
+       "2026-09-15 22:51",
+       282.6
       ]
      ],
-     "variacion": 161.2
+     "variacion": 186.41
     },
     {
      "tipo": "tierra",
@@ -1465,7 +1465,7 @@
      "duracion": "3:15",
      "minimo": 54.89,
      "maximo": 114.99,
-     "visto": "2026-09-15 18:54",
+     "visto": "2026-09-15 22:51",
      "estado": "ok",
      "historico": [
       [
@@ -1518,8 +1518,8 @@
      "texto": "Vuelo a las 05:15 y en Alicante a las 08:30."
     }
    ],
-   "total_persona": 357.38,
-   "total_grupo": 714.76,
+   "total_persona": 382.59,
+   "total_grupo": 765.18,
    "ida_fecha": "2026-10-08",
    "ida_hora": "20:15",
    "ida_iata": "VIE",
@@ -1540,6 +1540,6 @@
    "dentro_presupuesto": false
   }
  ],
- "actualizado": "2026-09-15 18:54",
- "actualizado_iso": "2026-09-15T18:54:57.598452+00:00"
+ "actualizado": "2026-09-15 22:51",
+ "actualizado_iso": "2026-09-15T22:51:10.770139+00:00"
 }
