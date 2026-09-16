@@ -418,3 +418,13 @@ señal que faltaba — una tarifa no sube por sorpresa, sube cuando se agota su
 cubo, y el Gdansk de vuelta subió 10 € de golpe justo por no tener este dato.
 El filtro aquí es **más estricto** que en las bajadas: si el vuelo no forma parte
 de ningún viaje que puedas hacer, que se agote da igual y no se avisa.
+
+### El itinerario no repite trenes ni enlaces
+Los traslados por tierra se pintaban dentro del bucle de vuelos usando la lista
+entera, así que **cada tren salía una vez por cada vuelo**: el mismo trayecto
+aparecía como *"y luego: Wrocław → Pardubice"* tras la ida y otra vez como
+*"cómo llegas: Wrocław → Pardubice"* antes de la vuelta. Ahora cada traslado se
+cuelga solo del vuelo al que sigue. Si hay dos seguidos se encadenan en una
+línea (*"Viena → Praga → Pardubice · 5h00 en total"*).
+
+El vuelo del aviso tampoco repite su enlace: ya lleva el botón grande al final.

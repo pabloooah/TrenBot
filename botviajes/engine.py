@@ -110,7 +110,18 @@ def bloque_viaje(watch, watches, precio_actual=None, maximo=2):
                % (mejor["total"], mejor["total"] * 2,
                   "✅ entra en tu tope" if mejor["dentro"] else "⚠️ se pasa del tope")]
     vuelos = [t for t in mejor["tramos"] if t.get("tipo") == "vuelo"]
-    tierras = [t for t in mejor["tramos"] if t.get("tipo") == "tierra"]
+    # Cada traslado se cuelga del vuelo al que SIGUE, y solo de ese. Antes se
+    # usaba la lista entera dentro del bucle, así que el mismo tren se repetía
+    # una vez por vuelo: "y luego: Wrocław → Pardubice" tras la ida y "cómo
+    # llegas: Wrocław → Pardubice" antes de la vuelta, siendo el mismo viaje.
+    siguientes = {}
+    ultimo_vuelo = None
+    for t in mejor["tramos"]:
+        if t.get("tipo") == "tierra":
+            if ultimo_vuelo is not None:
+                siguientes.setdefault(id(ultimo_vuelo), []).append(t)
+        else:
+            ultimo_vuelo = t
     for n, t in enumerate(mejor["tramos"]):
         if t.get("tipo") == "tierra":
             # No se pinta aquí: cada bloque de vuelo ya lleva su conexión al
@@ -143,8 +154,9 @@ def bloque_viaje(watch, watches, precio_actual=None, maximo=2):
         # Cada bloque lleva al lado su conexión por tierra, etiquetada según
         # toque: en la ida es lo que viene después, en la vuelta es cómo has
         # llegado hasta ese aeropuerto.
+        tierras = siguientes.get(id(t)) or []
         if tierras:
-            etiq = "y luego" if rol == "IDA" else "cómo llegas"
+            etiq = "y luego"
             lineas.append("")
             if len(tierras) == 1:
                 g = tierras[0]
@@ -161,7 +173,9 @@ def bloque_viaje(watch, watches, precio_actual=None, maximo=2):
                               % (etiq, ruta,
                                  "%dh%02d" % (total // 60, total % 60) if total
                                  else "varios tramos"))
-        if t.get("url"):
+        # El vuelo del aviso ya lleva su enlace grande al final del mensaje:
+        # ponerlo aquí también era el mismo enlace dos veces.
+        if t.get("url") and not t.get("es_del_aviso"):
             lineas.append("")
             lineas.append('      👉 <a href="%s">comprar este</a>' % t["url"])
     if len(viajes) > 1:
