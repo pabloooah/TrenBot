@@ -373,6 +373,9 @@ class Engine:
                                          watch["date"], adults=watch.get("adults", 1))
                 todas.extend(offers)
                 found.extend([o for o in offers if self._matches(o, watch)])
+                # Cuántas plazas quedan a este precio. Es la señal que avisa de
+                # que una tarifa va a subir, y en Wizz no viene en la respuesta.
+                self._mirar_plazas(watch, provider)
             except NotImplementedError:
                 pass  # proveedor experimental (p.ej. iryo)
             except Exception as e:
@@ -404,7 +407,9 @@ class Engine:
         """
         UMBRAL = 3
         st = self._state.setdefault(watch["id"], {})
-        if any(o.price for o in todas):
+        # Saber que un vuelo no tiene plazas ES un dato: no estamos ciegos.
+        if any(o.price for o in todas) or any((o.raw or {}).get("sin_venta")
+                                              for o in todas):
             if st.get("ciegos"):
                 st["ciegos"] = 0
             clave = self.clave_aviso(watch, "ceguera")
@@ -484,6 +489,73 @@ class Engine:
                    "Sigo intentándolo y te aviso en cuanto vuelvan los precios."]
         return "\n".join(lineas)
 
+    def _mirar_plazas(self, watch, provider, cada_horas=6):
+        """Cuántos asientos quedan al precio actual (solo Wizz, que no lo dice).
+
+        Ryanair publica `faresLeft` y no hace falta. Wizz bloquea con 429 el
+        único endpoint que lo trae, así que se deduce de su escalera de tarifas
+        (ver `plazas_restantes`). Cuesta 3-4 consultas, así que se hace cada
+        pocas horas, no en cada sondeo.
+        """
+        if not hasattr(provider, "plazas_restantes"):
+            return
+        ahora = time.time()
+        if ahora - float(watch.get("plazas_miradas", 0)) < cada_horas * 3600:
+            return
+        try:
+            plazas, precio = provider.plazas_restantes(
+                watch["origin"], watch["destination"], watch["date"],
+                adults=int(watch.get("adults", 1) or 1))
+        except Exception as e:
+            print("  [plazas] %s: %s" % (watch["name"], str(e)[:70]))
+            return
+        with self._lock:
+            watch["plazas_miradas"] = ahora
+            watch["ultimo_plazas"] = plazas
+            watch["plazas_precio"] = precio
+            self._save()
+        if plazas is not None:
+            print("  [plazas] %s: quedan %d a %.2f €"
+                  % (watch["name"], plazas, precio or 0))
+
+    def _aviso_pocas_plazas(self, watch, umbral=2):
+        """Avisa cuando quedan muy pocos asientos al precio actual.
+
+        Es la señal que faltaba: una tarifa no sube por sorpresa, sube cuando se
+        agota su cubo. El Gdansk de vuelta subió 10 € de golpe y no se vio venir
+        porque no teníamos este dato. Se calla si el viaje está lejísimos del
+        tope (mismo criterio que las bajadas) y no se repite en 12 h.
+        """
+        plazas = watch.get("ultimo_plazas")
+        precio = watch.get("plazas_precio") or watch.get("ultimo_precio")
+        if plazas is None or precio is None or plazas > umbral:
+            self._olvidar_aviso(watch, "plazas")
+            return None
+        from botviajes.models import Offer
+        falso = Offer(provider=(watch["providers"] or ["?"])[0],
+                      origin=watch["origin"], destination=watch["destination"],
+                      date=watch["date"], departure=watch.get("time") or "",
+                      price=precio, available=True)
+        # Aquí el criterio es MÁS estricto que en las bajadas: si el vuelo no
+        # forma parte de ningún viaje que puedas hacer, que se agote da igual.
+        # No hay nada que perder, así que avisar solo sería ruido.
+        try:
+            viajes = viajes_con(watch, self.watches, precio)
+        except Exception:
+            viajes = []
+        if not viajes:
+            return None
+        if TOPE_VIAJE and min(v["total"] for v in viajes) > TOPE_VIAJE * 1.25:
+            self.silenciadas += 1
+            return None
+        if not self._puede_avisar(watch, "plazas", horas=12):
+            return None
+        return ("⏳ <b>Quedan %d plaza%s</b>\n\n<b>%s</b>\n%.2f € por persona.\n\n"
+                "Cuando se acaben a este precio, el vuelo sube al siguiente "
+                "escalón de tarifa.\n\n<a href=\"%s\">Comprar →</a>"
+                % (plazas, "s" if plazas > 1 else "", watch["name"], precio,
+                   watch.get("ultimo_url") or ""))
+
     def _registrar_precio(self, watch, todas):
         """Guarda el precio mas barato visto y avisa si ha BAJADO.
 
@@ -492,25 +564,29 @@ class Engine:
         """
         mejor = self._mas_barata(todas, watch.get("time"))
         if mejor is None:
-            # Puede que el proveedor solo haya dado un precio orientativo (Wizz
-            # a veces responde "míralo en la web"). Se guarda aparte para que la
-            # vigilancia no se quede ciega, pero NO cuenta como precio real ni
-            # dispara ningún aviso.
-            orient = [o for o in todas
-                      if (o.raw or {}).get("orientativo") and o.price and o.price > 0]
-            if orient:
-                barata = min(orient, key=lambda o: o.price)
+            # Wizz puede decir que ese vuelo NO tiene ninguna tarifa a la
+            # venta. Antes se guardaba su `originalPrice` como "orientativo",
+            # pero ese número no se puede comprar: era inventarse un precio.
+            # Ahora se registra el estado real y no se enseña cifra ninguna.
+            sin_venta = [o for o in todas if (o.raw or {}).get("sin_venta")]
+            if sin_venta:
+                v = sin_venta[0]
                 with self._lock:
-                    watch["ultimo_orientativo"] = barata.price
-                    watch["orientativo_visto"] = time.strftime("%Y-%m-%d %H:%M")
-                    # Aunque el precio no sea firme, el vuelo existe: sus horas
-                    # y su duración sí valen y hay que guardarlas.
-                    watch["ultimo_salida"] = barata.departure
-                    watch["ultimo_llegada"] = barata.arrival
-                    watch["ultimo_duracion"] = (barata.raw or {}).get("duracion")
-                    watch["ultimo_url"] = barata.buy_url or watch.get("ultimo_url")
+                    watch["sin_venta"] = True
+                    watch["sin_venta_visto"] = time.strftime("%Y-%m-%d %H:%M")
+                    watch.pop("ultimo_orientativo", None)
+                    watch.pop("orientativo_visto", None)
+                    # El vuelo existe aunque no se venda: sus horas siguen
+                    # valiendo para armar el viaje.
+                    watch["ultimo_salida"] = v.departure or watch.get("ultimo_salida")
+                    watch["ultimo_llegada"] = v.arrival or watch.get("ultimo_llegada")
+                    watch["ultimo_url"] = v.buy_url or watch.get("ultimo_url")
                     self._save()
             return None
+        if watch.get("sin_venta"):          # ha vuelto a haber plazas
+            with self._lock:
+                watch.pop("sin_venta", None)
+                watch.pop("sin_venta_visto", None)
         anterior = watch.get("ultimo_precio")
         umbral = float(watch.get("umbral_bajada", 3.0))
         # Los vuelos que salen de fuera de la zona euro cotizan en su moneda
@@ -540,7 +616,13 @@ class Engine:
             watch["ultimo_salida"] = mejor.departure
             watch["ultimo_llegada"] = mejor.arrival
             watch["ultimo_etiqueta"] = mejor.label
-            watch["ultimo_plazas"] = (mejor.raw or {}).get("plazas")
+            # Ryanair manda las plazas en la respuesta; Wizz no, y las deduce
+            # _mirar_plazas de su escalera de tarifas. Si el proveedor no las
+            # trae NO se pisan con None: se borraría el único dato que tenemos.
+            plazas_prov = (mejor.raw or {}).get("plazas")
+            if plazas_prov is not None:
+                watch["ultimo_plazas"] = plazas_prov
+                watch["plazas_precio"] = mejor.price
             watch["ultimo_duracion"] = (mejor.raw or {}).get("duracion")
             watch["ultimo_bruto"] = bruto
             watch["ultimo_divisa"] = divisa
@@ -762,6 +844,12 @@ class Engine:
                 if self._revisar_ceguera(watch, todas):
                     ciegas.append(watch)
                 bajada = self._registrar_precio(watch, todas)
+                escaso = self._aviso_pocas_plazas(watch)
+                if escaso:
+                    self.notifier.telegram(self._chat_for(watch), escaso)
+                    print("[%s] ⏳ POCAS PLAZAS en '%s' (%s)"
+                          % (time.strftime("%H:%M:%S"), watch["name"],
+                             watch.get("ultimo_plazas")))
                 bajaba_desde = None
                 if bajada:
                     # Si además entra en objetivo, se cuenta en ese mensaje y no

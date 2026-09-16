@@ -206,14 +206,14 @@ function segmento(t){
     </div></div>`;
   const cia=t.cia==="wizz"?"Wizz Air":"Ryanair";
   const pl=(typeof t.plazas==="number"&&t.plazas>0)?`<span class="mini w">quedan ${t.plazas}</span>`:"";
-  const orient=t.estado==="orientativo"
-    ?`<span class="mini w">precio orientativo · la aerolínea no lo publica ahora</span>`:"";
+  const orient=t.estado==="sin_venta"
+    ?`<span class="mini w">sin plazas a la venta · la aerolínea no vende este vuelo ahora</span>`:"";
   const dv=t.variacion||0;
   const ch=dv?`<span class="mini ${dv<0?"o":""}">${dv<0?"▼":"▲"} ${eur(Math.abs(dv))}</span>`:"";
   return `<div class="seg"><div class="ic">✈️</div><div class="bd">
     <div class="t1"><b>${esc(t.sale)} → ${esc(t.llega)}</b> · ${esc(t.de)} ${esc(t.de_nombre)} → ${esc(t.a)} ${esc(t.a_nombre)}${t.duracion?` · <span style="color:var(--ink3)">${esc(dur(t.duracion))}</span>`:""}</div>
     <div class="t2">${esc(diaL(t.fecha))} · ${cia} ${esc(t.etiqueta||t.vuelo)} · directo</div>
-    <a class="buy" href="${esc(t.url)}" target="_blank" rel="noopener">${t.estado==="orientativo"?"Ver precio en":"Comprar"} ${t.estado==="orientativo"?(t.cia==="wizz"?"Wizz Air":"Ryanair"):eur(t.precio)} →</a>${orient}${pl}${ch}
+    <a class="buy" href="${esc(t.url)}" target="_blank" rel="noopener">${t.estado==="sin_venta"?"Comprobar en":"Comprar"} ${t.estado==="sin_venta"?(t.cia==="wizz"?"Wizz Air":"Ryanair"):eur(t.precio)} →</a>${orient}${pl}${ch}
     ${(t.minimo!=null&&t.minimo!==t.maximo)?`<div class="t2" style="margin-top:6px">Se ha movido entre <b>${eur(t.minimo)}</b> y ${eur(t.maximo)} desde que lo vigilo</div>`:(t.minimo!=null?`<div class="t2" style="margin-top:6px">Sin cambios desde que lo vigilo</div>`:"")}
     </div></div>`;
 }
@@ -245,7 +245,7 @@ function fila(o){
     <div class="cell" data-l="Allí"><b>${o.horas_destino} h</b><span>${o.noches} noches</span></div>
     <div class="cell" data-l="Traslado"><b>${horas(o.minutos_tierra)}</b>
       <span>${o.saltos} ${o.saltos===1?"salto":"saltos"}${av.length?" · "+av[0]:""}</span></div>
-    <div class="price ${o.dentro_presupuesto?"":"over"}">${o.tiene_orientativo?"≈ ":""}${eur(o.total_persona)}
+    <div class="price ${o.dentro_presupuesto?"":"over"}">${o.tiene_sin_venta?"— ":""}${o.tiene_sin_venta?"incompleta":eur(o.total_persona)}
       <small>${eur(o.total_grupo)} los dos${dv?` · ${dv<0?"▼":"▲"}${eur(Math.abs(dv))}`:""}</small></div>
     <div class="chev">⌄</div>
   </button>${detalle(o)}`;

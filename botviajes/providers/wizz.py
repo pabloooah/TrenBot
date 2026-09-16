@@ -302,6 +302,54 @@ class WizzProvider(Provider):
             ))
         return ofertas
 
+    def plazas_restantes(self, co, cd, fecha, adults=1, tope=9):
+        """Cuántos asientos quedan al precio actual, sin que Wizz lo diga.
+
+        Wizz bloquea con 429 el único endpoint que publica plazas. Pero vende
+        por cubos de tarifa: si pides más pasajeros de los que quedan en el cubo
+        barato, el precio SALTA al siguiente. Preguntando por 1, 2, 3... se ve
+        dónde salta, y ese escalón es justo cuántos asientos quedan a ese
+        precio. Es el aviso de que una tarifa se agota, que es lo que se perdía.
+
+        Devuelve (plazas, precio) o (None, None). `plazas == tope` significa
+        "quedan al menos esos", no exactamente esos.
+        """
+        base = self._precio_suelto(co, cd, fecha, adults)
+        if base is None:
+            return None, None
+        # Búsqueda binaria: con 3-4 consultas basta, en vez de nueve.
+        bajo, alto = adults, tope
+        if self._precio_suelto(co, cd, fecha, alto) == base:
+            return alto, base
+        while bajo + 1 < alto:
+            medio = (bajo + alto) // 2
+            if self._precio_suelto(co, cd, fecha, medio) == base:
+                bajo = medio
+            else:
+                alto = medio
+        return bajo, base
+
+    def _precio_suelto(self, co, cd, fecha, adults):
+        """Precio de ese vuelo concreto para N pasajeros, o None si no hay."""
+        tramos = [{"departureStation": co, "arrivalStation": cd,
+                   "from": fecha, "to": fecha}]
+        if not self._en_euros(co) and self._en_euros(cd):
+            tramos.insert(0, {"departureStation": cd, "arrivalStation": co,
+                              "from": fecha, "to": fecha})
+        d = self._post("/search/timetable",
+                       {"flightList": tramos, "priceType": "regular",
+                        "adultCount": adults, "childCount": 0, "infantCount": 0})
+        for clave in ("outboundFlights", "returnFlights"):
+            for f in (d or {}).get(clave, []) or []:
+                if (f.get("departureStation") == co
+                        and f.get("arrivalStation") == cd
+                        and (f.get("departureDate") or "").startswith(fecha)
+                        and f.get("priceType") == "price"):
+                    p = f.get("price") or {}
+                    if p.get("amount"):
+                        return a_euros(p["amount"], p.get("currencyCode"))
+        return None
+
     def _por_timetable(self, co, cd, date, adults, no, nd, compra):
         """Respaldo: aguanta mucho mejor, pero solo da precio y hora de salida."""
         tramos = [{"departureStation": co, "arrivalStation": cd, "from": date, "to": date}]
@@ -329,20 +377,20 @@ class WizzProvider(Provider):
                 # provocaba avisos falsos de "billetes a 0,00 €".
                 tipo = f.get("priceType")
                 importe = p.get("amount")
-                orientativo = False
+                sin_venta = False
                 if tipo != "price" or importe is None or float(importe) <= 0:
-                    # Wizz no da precio firme, pero sí suele dejar uno de
-                    # referencia en originalPrice. Se usa SOLO como orientación:
-                    # el vuelo se marca como no comprable y nunca dispara avisos.
-                    orig = (f.get("originalPrice") or {}).get("amount")
-                    precio = a_euros(orig, (f.get("originalPrice") or {}).get(
-                        "currencyCode")) if orig and float(orig) > 0 else None
-                    orientativo = precio is not None
-                    print("  [wizz] %s->%s %s: Wizz no publica precio "
-                          "(priceType=%r); %s"
-                          % (co, cd, (f.get("departureDate") or "")[:10], tipo,
-                             "uso %.2f € como orientativo" % precio if precio
-                             else "sin dato"))
+                    # Wizz marca así los vuelos sin ninguna tarifa a la venta.
+                    # Deja un `originalPrice` de referencia, pero ESE PRECIO NO
+                    # SE PUEDE COMPRAR: enseñarlo era inventarse una cifra. Se
+                    # descarta y el vuelo queda como lo que es, sin plazas.
+                    # Comprobado: no hay precio ni pidiendo 1 solo pasajero ni
+                    # con tarifa de socio WDC, y la misma ruta sí lo da otros
+                    # días, así que no es un bloqueo nuestro.
+                    precio = None
+                    sin_venta = True
+                    print("  [wizz] %s->%s %s: sin plazas a la venta "
+                          "(priceType=%r)"
+                          % (co, cd, (f.get("departureDate") or "")[:10], tipo))
                 else:
                     precio = a_euros(importe, p.get("currencyCode"))
                 for salida in (f.get("departureDates") or [""]):
@@ -351,14 +399,14 @@ class WizzProvider(Provider):
                     ofertas.append(Offer(
                         provider=self.name, origin=no or co, destination=nd or cd,
                         date=date, departure=hora, arrival=llega,
-                        label="W6 · precio orientativo" if orientativo else "W6",
+                        label="W6 · sin plazas" if sin_venta else "W6",
                         price=precio,
                         # sin precio firme no se puede decir que sea comprable
-                        available=precio is not None and not orientativo,
+                        available=precio is not None,
                         buy_url=compra,
                         raw={"divisa": p.get("currencyCode"), "bruto": p.get("amount"),
                              "via": "timetable", "llegada_estimada": estimada,
-                             "priceType": tipo, "orientativo": orientativo,
+                             "priceType": tipo, "sin_venta": sin_venta,
                              "duracion": self.duracion(co, cd, hora, llega),
                              "pais_origen": self._est.get(co, {}).get("country", ""),
                              "pais_destino": self._est.get(cd, {}).get("country", "")},

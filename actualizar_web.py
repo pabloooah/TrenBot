@@ -88,16 +88,17 @@ def desde_watches(tramo):
     for w in json.load(open(WATCHES, encoding="utf-8")):
         if (tramo["cia"] in w.get("providers", []) and w.get("origin") == tramo["de"]
                 and w.get("destination") == tramo["a"] and w.get("date") == tramo["fecha"]
-                and w.get("ultimo_precio") is not None):
-            # Si lo último que se supo fue un precio orientativo y es más
-            # reciente que el firme, manda el orientativo: enseñar el firme
-            # viejo como si siguiera vigente sería engañar.
-            if (w.get("ultimo_orientativo") and
-                    (w.get("orientativo_visto") or "") > (w.get("ultimo_visto") or "")):
-                return {"estado": "orientativo", "precio": w["ultimo_orientativo"],
-                        "sale": tramo["sale"], "llega": tramo.get("llega", ""),
-                        "etiqueta": "precio orientativo", "url": w.get("ultimo_url", ""),
-                        "plazas": None, "visto": w.get("orientativo_visto")}
+                and (w.get("ultimo_precio") is not None or w.get("sin_venta"))):
+            # Si lo último que se supo es que la aerolínea no vende ese vuelo,
+            # se dice eso y no se enseña cifra: ni el último precio firme (ya no
+            # existe) ni el "de referencia" de Wizz (nunca se pudo comprar).
+            if w.get("sin_venta"):
+                return {"estado": "sin_venta", "precio": None,
+                        "sale": w.get("ultimo_salida") or tramo["sale"],
+                        "llega": w.get("ultimo_llegada") or tramo.get("llega", ""),
+                        "etiqueta": "sin plazas a la venta",
+                        "url": w.get("ultimo_url", ""),
+                        "plazas": 0, "visto": w.get("sin_venta_visto")}
             serie = [p[1] for p in (w.get("serie") or []) if p[1] and p[1] > 0]
             return {"estado": "ok", "precio": w["ultimo_precio"],
                     "sale": w.get("ultimo_salida") or tramo["sale"],
@@ -128,9 +129,9 @@ def consultar(tramo, pasajeros):
     if elegido is None:
         return {"estado": "sin_vuelo",
                 "detalle": "no aparece salida a las %s" % tramo["sale"]}
-    orientativo = bool((elegido.raw or {}).get("orientativo"))
+    sin_venta = bool((elegido.raw or {}).get("sin_venta"))
     return {
-        "estado": "orientativo" if orientativo
+        "estado": "sin_venta" if sin_venta
                   else ("ok" if elegido.available else "agotado"),
         "precio": elegido.price,
         "sale": elegido.departure or tramo["sale"],
@@ -193,8 +194,8 @@ def main():
                                    if len(serie) > 1 else 0.0)
                 if r.get("precio") is not None:
                     total += r["precio"]
-                    if r["estado"] == "orientativo":
-                        salida["tiene_orientativo"] = True
+                    if r["estado"] == "sin_venta":
+                        salida["tiene_sin_venta"] = True
                 else:
                     completo = False
             tramos_out.append(t2)

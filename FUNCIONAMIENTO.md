@@ -389,3 +389,32 @@ Ahora encabeza **la más barata que se puede comprar de verdad**, y:
   a cambio de tres horas de tren no es ahorrar;
 - si **ninguna** tuviera precio firme, lo dice en vez de afirmar que se puede
   comprar.
+
+### Nunca un precio que no se pueda comprar
+Wizz marca algunos vuelos con `priceType: checkPrice`, manda `price.amount = 0`
+y deja un `originalPrice` de referencia. El bot enseñaba ese `originalPrice`
+como "precio orientativo" — **es un número que no se puede comprar**, así que
+era inventárselo. Fuera. Ahora ese vuelo queda como lo que es: **sin plazas a la
+venta**, sin cifra, y las combinaciones que lo contienen salen *incompletas*.
+
+Comprobado antes de decidirlo: no hay precio ni pidiendo **1 solo pasajero**, ni
+con tarifa de socio (WDC), y **la misma ruta sí da precio otros días**
+(7-oct 69,99 € · 14-oct 89,99 €), así que no es un bloqueo nuestro.
+
+### Cuántas plazas quedan, sin que Wizz lo diga
+Ryanair publica `faresLeft`. Wizz bloquea con 429 el único endpoint que lo trae,
+así que **se deduce**: Wizz vende por cubos de tarifa, y si pides más pasajeros
+de los que quedan en el cubo barato, **el precio salta**.
+
+    ALC→Gdansk   1:90  2:90  3:90 | 4:100 ... 8:115
+                 └── quedan 3 asientos a 89,99 €
+
+`plazas_restantes()` lo busca en binario: 3-4 consultas en vez de nueve.
+Validado contra la escalera completa de las cinco rutas de Wizz: acierta las
+cinco. Se recalcula cada 6 h, no en cada sondeo.
+
+Con esto llega un aviso nuevo: **⏳ Quedan N plazas**, cuando bajan de 2. Es la
+señal que faltaba — una tarifa no sube por sorpresa, sube cuando se agota su
+cubo, y el Gdansk de vuelta subió 10 € de golpe justo por no tener este dato.
+El filtro aquí es **más estricto** que en las bajadas: si el vuelo no forma parte
+de ningún viaje que puedas hacer, que se agote da igual y no se avisa.

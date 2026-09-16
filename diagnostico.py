@@ -34,7 +34,7 @@ def main():
             buenas = [x for x in offs if x.price and x.price > 0]
             if buenas:
                 mejor = min(buenas, key=lambda x: x.price)
-                tipo = "orientativo" if (mejor.raw or {}).get("orientativo") else "firme"
+                tipo = "sin venta" if (mejor.raw or {}).get("sin_venta") else "firme"
                 print("%-22s %10.2f %-12s %s" % ("%s %s→%s" % (prov, o, d),
                                                  mejor.price, tipo, mejor.departure))
                 salida["%s|%s|%s" % (prov, o, d)] = [mejor.price, tipo, mejor.departure]

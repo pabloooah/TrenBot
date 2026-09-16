@@ -43,7 +43,7 @@ def _watch_to_yaml(w):
 
 def _es_firme(op):
     """¿Se pueden comprar de verdad todos los vuelos de esta combinación?"""
-    return not any(t.get("estado") == "orientativo"
+    return not any(t.get("estado") in ("sin_venta", "orientativo")
                    for t in (op.get("tramos") or []) if t.get("tipo") != "tierra")
 
 
@@ -136,14 +136,12 @@ def latido_diario(engine, notifier, destino, horas=12):
     # ciego, pero NO se puede comprar a ese precio. Sin decirlo aquí, un vuelo
     # podía llevar días con una cifra no firme y parecer tan sólida como el
     # resto, que es justo lo contrario de fiarse de lo que cuento.
-    flojos = [w for w in activas
-              if w.get("ultimo_orientativo")
-              and (w.get("orientativo_visto") or "") > (w.get("ultimo_visto") or "")]
-    for w in flojos:
+    agotados = [w for w in activas if w.get("sin_venta")]
+    for w in agotados:
         desde = (w.get("ultimo_visto") or "?")[:10]
-        lineas.append("⚠️ <b>%s</b>: la aerolínea no publica precio firme desde "
-                      "el %s; lo que ves (%.2f €) es orientativo y podría no ser "
-                      "el real." % (w["name"], desde, w["ultimo_orientativo"]))
+        lineas.append("⛔ <b>%s</b>: la aerolínea no tiene ninguna plaza a la "
+                      "venta en ese vuelo. Último precio real, el %s."
+                      % (w["name"], desde))
     # Contar lo que se ha callado: si no, un silencio largo no se distingue de
     # una avería, que es justo lo que pasó.
     n = getattr(engine, "silenciadas", 0)
