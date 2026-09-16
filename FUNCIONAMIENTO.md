@@ -374,3 +374,18 @@ alguna vez cambia. El umbral es del **3 %**: comparar al cambio del BCE engaña,
 porque pagando en moneda extranjera el banco cobra su comisión (1,5-3 % es lo
 normal), así que un ahorro menor que eso no es un ahorro. También se puede
 lanzar a mano: `python divisas.py`.
+
+### Qué combinación encabeza el resumen
+Durante un tiempo el resumen se contradecía solo: anunciaba *"la más barata es
+Bratislava + Praga, 167,92 €"* y dos líneas más abajo avisaba de que ese precio
+no era firme. Elegía por precio y nada más.
+
+Ahora encabeza **la más barata que se puede comprar de verdad**, y:
+
+- si alguna sale más barata pero con precio orientativo, se nombra aparte como
+  lo que es —un número de escaparate—, nunca como la mejor opción;
+- si la más barata obliga a un traslado y hay otra casi al mismo precio que no,
+  se dice (*"por 2,06 € más, Gdansk te ahorra ese traslado"*). Ahorrar dos euros
+  a cambio de tres horas de tren no es ahorrar;
+- si **ninguna** tuviera precio firme, lo dice en vez de afirmar que se puede
+  comprar.

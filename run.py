@@ -41,6 +41,22 @@ def _watch_to_yaml(w):
     return d
 
 
+def _es_firme(op):
+    """¿Se pueden comprar de verdad todos los vuelos de esta combinación?"""
+    return not any(t.get("estado") == "orientativo"
+                   for t in (op.get("tramos") or []) if t.get("tipo") != "tierra")
+
+
+def _tierra(op):
+    """El traslado por tierra en palabras: es parte de lo que cuesta el viaje."""
+    m = op.get("minutos_tierra") or 0
+    if not m:
+        return "sin traslados"
+    if m % 60:
+        return "%d h %02d min por tierra" % (m // 60, m % 60)
+    return "%d h por tierra" % (m // 60)
+
+
 def latido_diario(engine, notifier, destino, horas=12):
     """Un resumen al día, para que el silencio no se confunda con normalidad.
 
@@ -60,19 +76,53 @@ def latido_diario(engine, notifier, destino, horas=12):
     try:
         datos = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                             "web", "datos.json"), encoding="utf-8"))
-        dentro = [o for o in datos["opciones"] if o.get("dentro_presupuesto")]
         tope = datos["viaje"]["tope_por_persona"]
+        todas = [o for o in datos["opciones"] if o.get("total_persona")]
+        # Nunca encabezar con un precio que no se puede comprar. El mensaje se
+        # contradecía solo: anunciaba "la más barata es Bratislava + Praga,
+        # 167,92 €" y dos líneas más abajo avisaba de que esa cifra no era real.
+        firmes = [o for o in todas if _es_firme(o)]
+        base = firmes or todas
+        mejor = min(base, key=lambda o: o["total_persona"])
+        dentro = [o for o in firmes if o.get("dentro_presupuesto")]
         if dentro:
-            mejor = min(dentro, key=lambda o: o["total_persona"])
+            m = min(dentro, key=lambda o: o["total_persona"])
             lineas.append("Mejor combinación ahora: <b>%s</b> por <b>%.2f €</b> "
-                          "por persona." % (mejor["titulo"], mejor["total_persona"]))
+                          "por persona (%s)."
+                          % (m["titulo"], m["total_persona"], _tierra(m)))
             if len(dentro) > 1:
                 lineas.append("Hay %d por debajo de %d €." % (len(dentro), tope))
         else:
-            barata = min(datos["opciones"], key=lambda o: o["total_persona"] or 9e9)
+            # Si no queda ninguna con precio firme no se puede decir "se puede
+            # comprar": sería exactamente la mentira que este arreglo quita.
+            coletilla = ("que se puede comprar es" if firmes else
+                         "es (con precio aún sin confirmar)")
             lineas.append("Ninguna combinación baja de %d € por persona. La más "
-                          "barata es <b>%s</b>, %.2f €."
-                          % (tope, barata["titulo"], barata["total_persona"]))
+                          "barata %s <b>%s</b>, %.2f € (%s)."
+                          % (tope, coletilla, mejor["titulo"],
+                             mejor["total_persona"], _tierra(mejor)))
+        # Ahorrar 2 € a cambio de tres horas de tren no es ahorrar. Si la más
+        # barata obliga a moverse y hay otra casi al mismo precio que no, se
+        # nombra: el traslado es parte de lo que cuesta el viaje, no un detalle.
+        quietas = [o for o in firmes
+                   if (o.get("minutos_tierra") or 0) < (mejor.get("minutos_tierra") or 0)
+                   and o["total_persona"] <= mejor["total_persona"] + 15]
+        if quietas and (mejor.get("minutos_tierra") or 0) > 0:
+            q = min(quietas, key=lambda o: (o.get("minutos_tierra") or 0,
+                                            o["total_persona"]))
+            lineas.append("Por %.2f € más, <b>%s</b> te ahorra ese traslado (%s)."
+                          % (q["total_persona"] - mejor["total_persona"],
+                             q["titulo"], _tierra(q)))
+
+        # Si alguna sale más barata pero con precio no firme, se nombra como lo
+        # que es —un número de escaparate— en vez de venderla como la mejor.
+        humo = [o for o in todas
+                if not _es_firme(o) and o["total_persona"] < mejor["total_persona"]]
+        if humo:
+            h = min(humo, key=lambda o: o["total_persona"])
+            lineas.append("Sobre el papel <b>%s</b> saldría a %.2f €, pero ese "
+                          "precio no es firme: hoy no se puede comprar a esa cifra."
+                          % (h["titulo"], h["total_persona"]))
     except Exception:
         lineas.append("(no he podido leer el resumen de precios)")
     activas = [w for w in engine.watches if w.get("enabled", True)]
