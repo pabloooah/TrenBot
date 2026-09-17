@@ -45,7 +45,7 @@
      "duracion": "03:05",
      "minimo": 92.19,
      "maximo": 175.6,
-     "visto": "2026-09-17 06:28",
+     "visto": "2026-09-17 07:14",
      "estado": "ok",
      "historico": [
       [
@@ -160,7 +160,7 @@
      "duracion": "03:00",
      "minimo": 37.96,
      "maximo": 54.91,
-     "visto": "2026-09-17 06:27",
+     "visto": "2026-09-17 07:14",
      "estado": "ok",
      "historico": [
       [
@@ -313,7 +313,7 @@
      "duracion": "3:38",
      "minimo": 79.99,
      "maximo": 114.99,
-     "visto": "2026-09-17 06:28",
+     "visto": "2026-09-17 07:14",
      "estado": "ok",
      "historico": [
       [
@@ -375,7 +375,7 @@
      "duracion": "3:38",
      "minimo": 69.99,
      "maximo": 99.99,
-     "visto": "2026-09-17 06:28",
+     "visto": "2026-09-17 07:14",
      "estado": "ok",
      "historico": [
       [
@@ -477,7 +477,7 @@
      "duracion": "02:45",
      "minimo": 95.19,
      "maximo": 352.75,
-     "visto": "2026-09-17 06:27",
+     "visto": "2026-09-17 07:14",
      "estado": "ok",
      "historico": [
       [
@@ -601,7 +601,7 @@
      "duracion": "03:00",
      "minimo": 37.96,
      "maximo": 54.91,
-     "visto": "2026-09-17 06:27",
+     "visto": "2026-09-17 07:14",
      "estado": "ok",
      "historico": [
       [
@@ -759,7 +759,7 @@
      "duracion": "02:45",
      "minimo": 95.19,
      "maximo": 352.75,
-     "visto": "2026-09-17 06:27",
+     "visto": "2026-09-17 07:14",
      "estado": "ok",
      "historico": [
       [
@@ -874,7 +874,7 @@
      "duracion": "3:15",
      "minimo": 54.89,
      "maximo": 114.99,
-     "visto": "2026-09-17 06:27",
+     "visto": "2026-09-17 07:14",
      "estado": "ok",
      "historico": [
       [
@@ -985,7 +985,7 @@
      "etiqueta": "sin plazas a la venta",
      "url": "https://www.wizzair.com/es-es/booking/select-flight/ALC/BTS/2026-10-09/null/2/0/0/null",
      "plazas": 0,
-     "visto": "2026-09-17 06:27",
+     "visto": "2026-09-17 07:14",
      "estado": "sin_venta",
      "historico": [
       [
@@ -1057,7 +1057,7 @@
      "duracion": "03:00",
      "minimo": 37.96,
      "maximo": 54.91,
-     "visto": "2026-09-17 06:27",
+     "visto": "2026-09-17 07:14",
      "estado": "ok",
      "historico": [
       [
@@ -1208,7 +1208,7 @@
      "etiqueta": "sin plazas a la venta",
      "url": "https://www.wizzair.com/es-es/booking/select-flight/ALC/BTS/2026-10-09/null/2/0/0/null",
      "plazas": 0,
-     "visto": "2026-09-17 06:27",
+     "visto": "2026-09-17 07:14",
      "estado": "sin_venta",
      "historico": [
       [
@@ -1271,7 +1271,7 @@
      "duracion": "3:15",
      "minimo": 54.89,
      "maximo": 114.99,
-     "visto": "2026-09-17 06:27",
+     "visto": "2026-09-17 07:14",
      "estado": "ok",
      "historico": [
       [
@@ -1378,7 +1378,7 @@
      "etiqueta": "sin plazas a la venta",
      "url": "https://www.wizzair.com/es-es/booking/select-flight/ALC/BTS/2026-10-09/null/2/0/0/null",
      "plazas": 0,
-     "visto": "2026-09-17 06:27",
+     "visto": "2026-09-17 07:14",
      "estado": "sin_venta",
      "historico": [
       [
@@ -1443,20 +1443,16 @@
      "sale": "11:45",
      "llega": "14:25",
      "ref": 82.99,
-     "precio": 131.99,
-     "etiqueta": "FR3487 · 2 plazas",
+     "precio": 135.99,
+     "etiqueta": "FR3487 · 4 plazas",
      "url": "https://www.ryanair.com/es/es/trip/flights/select?adults=2&teens=0&children=0&infants=0&dateOut=2026-10-12&isConnectedFlight=false&discount=0&isReturn=false&originIata=LNZ&destinationIata=ALC",
-     "plazas": 2,
+     "plazas": 4,
      "duracion": "02:40",
      "minimo": 74.99,
      "maximo": 173.99,
-     "visto": "2026-09-17 06:27",
+     "visto": "2026-09-17 07:14",
      "estado": "ok",
      "historico": [
-      [
-       "2026-09-10 06:53",
-       152.99
-      ],
       [
        "2026-09-10 21:32",
        168.99
@@ -1532,9 +1528,13 @@
       [
        "2026-09-16 14:23",
        131.99
+      ],
+      [
+       "2026-09-17 07:14",
+       135.99
       ]
      ],
-     "variacion": 49.0
+     "variacion": 53.0
     }
    ],
    "itinerario": [
@@ -1577,6 +1577,6 @@
    "dentro_presupuesto": false
   }
  ],
- "actualizado": "2026-09-17 06:28",
- "actualizado_iso": "2026-09-17T06:28:05.012732+00:00"
+ "actualizado": "2026-09-17 07:14",
+ "actualizado_iso": "2026-09-17T07:14:22.331768+00:00"
 }
