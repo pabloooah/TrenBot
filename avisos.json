@@ -14,5 +14,21 @@
  "plazas:ryanair|ALC|WRO|2026-10-09": {
   "t": 1789631115.103216,
   "cuando": "2026-09-17 07:45"
+ },
+ "objetivo:renfe|Madrid-Chamartín-Clara Campoamor|Salamanca|2026-09-25": {
+  "t": 1789650602.967084,
+  "cuando": "2026-09-17 13:10"
+ },
+ "objetivo:renfe|Salamanca|Madrid-Chamartín-Clara Campoamor|2026-09-27": {
+  "t": 1789650605.9731174,
+  "cuando": "2026-09-17 13:10"
+ },
+ "objetivo:renfe|Madrid-Chamartín-Clara Campoamor|Salamanca|2026-10-02": {
+  "t": 1789650608.465751,
+  "cuando": "2026-09-17 13:10"
+ },
+ "objetivo:renfe|Salamanca|Madrid-Chamartín-Clara Campoamor|2026-10-04": {
+  "t": 1789650611.6076083,
+  "cuando": "2026-09-17 13:10"
  }
 }

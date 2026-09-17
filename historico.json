@@ -1214,5 +1214,29 @@
    "2026-09-16 17:33",
    99.99
   ]
+ ],
+ "renfe|Madrid-Chamartín-Clara Campoamor|Salamanca|2026-09-25": [
+  [
+   "2026-09-17 13:10",
+   21.6
+  ]
+ ],
+ "renfe|Salamanca|Madrid-Chamartín-Clara Campoamor|2026-09-27": [
+  [
+   "2026-09-17 13:10",
+   40.25
+  ]
+ ],
+ "renfe|Madrid-Chamartín-Clara Campoamor|Salamanca|2026-10-02": [
+  [
+   "2026-09-17 13:10",
+   31.55
+  ]
+ ],
+ "renfe|Salamanca|Madrid-Chamartín-Clara Campoamor|2026-10-04": [
+  [
+   "2026-09-17 13:10",
+   36.1
+  ]
  ]
 }
