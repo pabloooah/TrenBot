@@ -4,8 +4,8 @@
   "cuando": "2026-09-11 10:56"
  },
  "_latido": {
-  "t": 1789710718.1523907,
-  "cuando": "2026-09-18 05:51"
+  "t": 1789770793.7845669,
+  "cuando": "2026-09-18 22:33"
  },
  "_divisas": {
   "t": 1789710718.560059,
@@ -16,19 +16,19 @@
   "cuando": "2026-09-17 07:45"
  },
  "objetivo:renfe|Madrid-Chamartín-Clara Campoamor|Salamanca|2026-09-25": {
-  "t": 1789710710.435833,
-  "cuando": "2026-09-18 05:51"
+  "t": 1789770785.0880082,
+  "cuando": "2026-09-18 22:33"
  },
  "objetivo:renfe|Salamanca|Madrid-Chamartín-Clara Campoamor|2026-09-27": {
-  "t": 1789716732.9131699,
-  "cuando": "2026-09-18 07:32"
+  "t": 1789770787.7214613,
+  "cuando": "2026-09-18 22:33"
  },
  "objetivo:renfe|Madrid-Chamartín-Clara Campoamor|Salamanca|2026-10-02": {
-  "t": 1789710715.1962626,
-  "cuando": "2026-09-18 05:51"
+  "t": 1789770790.1466975,
+  "cuando": "2026-09-18 22:33"
  },
  "objetivo:renfe|Salamanca|Madrid-Chamartín-Clara Campoamor|2026-10-04": {
-  "t": 1789710717.7499812,
-  "cuando": "2026-09-18 05:51"
+  "t": 1789770793.3654568,
+  "cuando": "2026-09-18 22:33"
  }
 }
