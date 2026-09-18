@@ -4,31 +4,31 @@
   "cuando": "2026-09-11 10:56"
  },
  "_latido": {
-  "t": 1789614521.802299,
-  "cuando": "2026-09-17 03:08"
+  "t": 1789710718.1523907,
+  "cuando": "2026-09-18 05:51"
  },
  "_divisas": {
-  "t": 1789594503.1031094,
-  "cuando": "2026-09-16 21:35"
+  "t": 1789710718.560059,
+  "cuando": "2026-09-18 05:51"
  },
  "plazas:ryanair|ALC|WRO|2026-10-09": {
   "t": 1789631115.103216,
   "cuando": "2026-09-17 07:45"
  },
  "objetivo:renfe|Madrid-Chamartín-Clara Campoamor|Salamanca|2026-09-25": {
-  "t": 1789650602.967084,
-  "cuando": "2026-09-17 13:10"
+  "t": 1789710710.435833,
+  "cuando": "2026-09-18 05:51"
  },
  "objetivo:renfe|Salamanca|Madrid-Chamartín-Clara Campoamor|2026-09-27": {
-  "t": 1789650605.9731174,
-  "cuando": "2026-09-17 13:10"
+  "t": 1789716732.9131699,
+  "cuando": "2026-09-18 07:32"
  },
  "objetivo:renfe|Madrid-Chamartín-Clara Campoamor|Salamanca|2026-10-02": {
-  "t": 1789650608.465751,
-  "cuando": "2026-09-17 13:10"
+  "t": 1789710715.1962626,
+  "cuando": "2026-09-18 05:51"
  },
  "objetivo:renfe|Salamanca|Madrid-Chamartín-Clara Campoamor|2026-10-04": {
-  "t": 1789650611.6076083,
-  "cuando": "2026-09-17 13:10"
+  "t": 1789710717.7499812,
+  "cuando": "2026-09-18 05:51"
  }
 }
